@@ -1,76 +1,28 @@
-# ======================================================================
-# 1861. Rotating the Box
-# Difficulty: Medium
-# Link: https://leetcode.com/problems/rotating-the-box/submissions/1996629141/
-# ======================================================================
-#
-# Problem Description:
-#
-# You are given an m x n matrix of characters boxGrid representing a side-view of a box. Each cell of the box is one of the following:
-# 
-# 	A stone '#'
-# 	A stationary obstacle '*'
-# 	Empty '.'
-# 
-# The box is rotated 90 degrees clockwise, causing some of the stones to fall due to gravity. Each stone falls down until it lands on an obstacle, another stone, or the bottom of the box. Gravity does not affect the obstacles' positions, and the inertia from the box's rotation does not affect the stones' horizontal positions.
-# 
-# It is guaranteed that each stone in boxGrid rests on an obstacle, another stone, or the bottom of the box.
-# 
-# Return an n x m matrix representing the box after the rotation described above.
-# 
-#  
-# Example 1:
-# 
-# Input: boxGrid = [["#",".","#"]]
-# Output: [["."],
-#          ["#"],
-#          ["#"]]
-# 
-# Example 2:
-# 
-# Input: boxGrid = [["#",".","*","."],
-#               ["#","#","*","."]]
-# Output: [["#","."],
-#          ["#","#"],
-#          ["*","*"],
-#          [".","."]]
-# 
-# Example 3:
-# 
-# Input: boxGrid = [["#","#","*",".","*","."],
-#               ["#","#","#","*",".","."],
-#               ["#","#","#",".","#","."]]
-# Output: [[".","#","#"],
-#          [".","#","#"],
-#          ["#","#","*"],
-#          ["#","*","."],
-#          ["#",".","*"],
-#          ["#",".","."]]
-# 
-#  
-# Constraints:
-# 
-# 	m == boxGrid.length
-# 	n == boxGrid[i].length
-# 	1 <= m, n <= 500
-# 	boxGrid[i][j] is either '#', '*', or '.'.
-#
-# ======================================================================
-
-class Solution {class Solution {
-public:public:
-    vector<vector<char>> rotateTheBox(vector<vector<char>>& b) {    vector<vector<char>> rotateTheBox(vector<vector<char>>& b) {
-        vector<vector<char>> ans(b[0].size(),vector<char>(b.size()));        vector<vector<char>> ans(b[0].size(),vector<char>(b.size()));
-        int l=b.size()-1;        int l=b.size()-1;
-        for(int j=0;j<b.size();j++){        for(int j=0;j<b.size();j++){
-            int k=b[0].size();            int k=b[0].size();
-            for(int i=b[0].size()-1;i>=0;i--){            for(int i=b[0].size()-1;i>=0;i--){
-                if(b[j][i]=='*'){                if(b[j][i]=='*'){
-                    k=i;                    k=i;
-                    ans[i][l]='*';                    ans[i][l]='*';
-                }else if(b[j][i]=='#'){                }else if(b[j][i]=='#'){
-                    if((k-1)!=i){                    if((k-1)!=i){
-                        ans[k-1][l]='#';                        ans[k-1][l]='#';
-                        ans[i][l]='.';                        ans[i][l]='.';
-                    }else{                    }else{
-                        ans[i][l]='#';                        ans[i][l]='#';
+1class Solution {
+2public:
+3    vector<vector<char>> rotateTheBox(vector<vector<char>>& b) {
+4        vector<vector<char>> ans(b[0].size(),vector<char>(b.size()));
+5        int l=b.size()-1;
+6        for(int j=0;j<b.size();j++){
+7            int k=b[0].size();
+8            for(int i=b[0].size()-1;i>=0;i--){
+9                if(b[j][i]=='*'){
+10                    k=i;
+11                    ans[i][l]='*';
+12                }else if(b[j][i]=='#'){
+13                    if((k-1)!=i){
+14                        ans[k-1][l]='#';
+15                        ans[i][l]='.';
+16                    }else{
+17                        ans[i][l]='#';
+18                    }
+19                    k--;
+20                }else{
+21                    ans[i][l]='.';
+22                }
+23            }
+24            l--;
+25        }
+26        return ans;
+27    }
+28};
