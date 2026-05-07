@@ -1,0 +1,29 @@
+1class Solution {
+2public:
+3    vector<int> maxValue(vector<int>& nums) {
+4        vector<int> m(nums.size());
+5        m[0]=nums[0];
+6        for(int i=1;i<nums.size();i++){
+7            if(m[i-1]<nums[i]){
+8                m[i]=nums[i];
+9            }else{
+10                m[i]=m[i-1];
+11            }
+12        }
+13        pair<int,int> h={nums[nums.size()-1],m[nums.size()-1]};
+14        for(int i=nums.size()-2;i>=0;i--){
+15            if(m[i]<h.second){
+16                if(m[i]>h.first){
+17                    m[i]=h.second;
+18                    h.first=min(nums[i],h.first);
+19                }else{
+20                    h.first=nums[i];
+21                    h.second=m[i];
+22                }
+23            }else if(nums[i]<h.first){
+24                h.first=nums[i];
+25            }
+26        }
+27        return m;
+28    }
+29};
