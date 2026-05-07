@@ -1,0 +1,48 @@
+1class Solution {
+2public:
+3    unordered_set<int> v;
+4    bool canFinish(int nC, vector<vector<int>>& p) {
+5        vector<int> arr[nC];
+6        for(vector<int>& i:p){
+7            arr[i[0]].push_back(i[1]);
+8        }
+9        unordered_set<int> l;
+10        for(int i=0;i<nC;i++){
+11            if(!v.count(i)&&!l.count(i)){
+12                DFS(l,arr,i);
+13            }
+14        }
+15        if(v.size()==nC){
+16            return true;
+17        }
+18        return false;
+19    }
+20
+21    bool DFS(unordered_set<int>& l, vector<int> arr[],int i){
+22        if(l.count(i)){
+23            return false;
+24        }
+25        l.insert(i);
+26        if(v.count(i)){
+27            return true;
+28        }
+29        if(arr[i].size()==0){
+30            v.insert(i);
+31            return true;
+32        }
+33        
+34        bool b=false;
+35        for(int j=0;j<arr[i].size();j++){
+36            if(v.count(arr[i][j])){
+37                continue;
+38            }
+39            if(!l.count(arr[i][j])) b=DFS(l,arr,arr[i][j]);
+40            if(b==false){
+41                return false;
+42            }
+43        }
+44        v.insert(i);
+45        return true;
+46    }
+47
+48};
