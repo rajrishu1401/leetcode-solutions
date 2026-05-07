@@ -1,0 +1,20 @@
+1class Solution {
+2public:
+3    char findTheDifference(string s, string t) {
+4        unordered_map<char,int> m;
+5        for(char i:s){
+6            m[i]++;
+7        }
+8        for(char i:t){
+9            if(!m.count(i)){
+10                return i;
+11            }
+12            m[i]--;
+13            if(m[i]==0){
+14                m.erase(i);
+15            }
+16        }
+17        return '0';
+18
+19    }
+20};
