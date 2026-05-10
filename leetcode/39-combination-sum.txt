@@ -1,0 +1,29 @@
+1class Solution {
+2public:
+3    vector<vector<int>> ans;
+4    vector<vector<int>> combinationSum(vector<int>& cand, int target) {
+5        sort(cand.begin(),cand.end());
+6        hlp(cand,0,{},target);
+7        return ans;
+8    }
+9    void hlp(vector<int>& cand,int i,vector<int> g,int su){
+10        //cout<<i<<"  "<<su<<endl;
+11        if(i>=cand.size()||su<cand[i]){
+12            return;
+13        }
+14        int u=su/cand[i];
+15        int y=1;
+16        hlp(cand,i+1,g,su);
+17        while(y<=u){
+18            g.push_back(cand[i]);
+19            su-=cand[i];
+20            if(su==0){
+21                //cout<<i<<endl;
+22                ans.push_back(g);
+23                return;
+24            }
+25            hlp(cand,i+1,g,su);
+26            y++;
+27        }
+28    }
+29};
