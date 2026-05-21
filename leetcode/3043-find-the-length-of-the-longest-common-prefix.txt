@@ -1,0 +1,47 @@
+1class TrieNode{
+2public:
+3    TrieNode* nodes[10]={NULL};
+4};
+5class Solution {
+6public:
+7    TrieNode* st;
+8    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
+9       st=new TrieNode();
+10       for(int i:arr1){
+11        insert(i);
+12       }
+13       int ans=0;
+14       for(int i:arr2){
+15        ans=max(ans,sea(i));
+16       }
+17       return ans;
+18    }
+19    int sea(int i){
+20        TrieNode* n=st;
+21        string s=to_string(i);
+22        int idx=0;
+23        int ans=0;
+24        while((idx<s.size())&&(n->nodes[s[idx]-'0']!=NULL)){
+25            n=n->nodes[s[idx]-'0'];
+26            idx++;
+27            ans++;
+28        }
+29        return ans;
+30    }
+31    void insert(int i){
+32        TrieNode* n=st;
+33        string s=to_string(i);
+34        int idx=0;
+35        while((idx<s.size())&&(n->nodes[s[idx]-'0']!=NULL)){
+36            n=n->nodes[s[idx]-'0'];
+37            idx++;
+38        }
+39        while(idx<s.size()){
+40            n->nodes[s[idx]-'0']=new TrieNode();
+41            n=n->nodes[s[idx]-'0'];
+42            idx++;
+43        }
+44    }
+45
+46
+47};
