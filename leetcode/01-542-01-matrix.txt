@@ -1,0 +1,47 @@
+1class Solution {
+2public:
+3    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+4        vector<vector<int>> ans(mat.size(),vector<int>(mat[0].size(),-1));
+5        queue<pair<int,int>> a;
+6        for(int i=0;i<mat.size();i++){
+7            for(int j=0;j<mat[0].size();j++){
+8                //cout<<i<<" , "<<j<<endl;
+9                if(mat[i][j]==0){
+10                    ans[i][j]=0;
+11                    a.push({i,j});
+12                }
+13            }
+14        }
+15        int d=1;
+16        while(!a.empty()){
+17            queue<pair<int,int>> b;
+18            while(!a.empty()){
+19                pair<int,int> p=a.front();
+20                a.pop();
+21                if((p.first+1)<mat.size()&&ans[p.first+1][p.second]==-1){
+22                    ans[p.first+1][p.second]=d;
+23                    b.push({p.first+1,p.second});
+24                }
+25                if((p.second+1)<mat[0].size()&&ans[p.first][p.second+1]==-1){
+26                    ans[p.first][p.second+1]=d;
+27                    b.push({p.first,p.second+1});
+28                }
+29                if((p.second-1)>=0&&ans[p.first][p.second-1]==-1){
+30                    ans[p.first][p.second-1]=d;
+31                    b.push({p.first,p.second-1});
+32                }
+33                if((p.first-1)>=0&&ans[p.first-1][p.second]==-1){
+34                    ans[p.first-1][p.second]=d;
+35                    b.push({p.first-1,p.second});
+36                }
+37                
+38            }
+39            //cout<<ans[i][j]<<"  ";
+40            a=move(b);
+41            d++;
+42        }
+43        //cout<<endl;
+44        return ans;
+45    }
+46    
+47};
