@@ -1,0 +1,23 @@
+1class Solution {
+2public:
+3    bool check(vector<int>& nums) {
+4        int ma=-nums[0];
+5        for(int i=1;i<nums.size();i++){
+6            if(nums[i-1]>nums[i]){
+7                if(ma>0){
+8                    return false;
+9                }else{
+10                    ma=-ma;
+11                    if(ma<nums[i]){
+12                        return false;
+13                    }
+14                }
+15            }else{
+16                if(ma>0&&nums[i]>ma){
+17                    return false;
+18                }
+19            }
+20        }
+21        return true;
+22    }
+23};
