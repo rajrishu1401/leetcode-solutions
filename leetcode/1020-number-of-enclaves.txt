@@ -1,0 +1,61 @@
+1class Solution {
+2public:
+3    int numEnclaves(vector<vector<int>>& grid) {
+4        vector<vector<bool>> vis(grid.size(),vector<bool>(grid[0].size()));
+5        int h=grid[0].size()-1;
+6        for(int i=0;i<grid.size();i++){
+7            if(grid[i][0]==1&&!vis[i][0]){
+8                vis[i][0]=true;
+9                hlp(grid,vis,i,0);
+10            }
+11            if(grid[i][h]==1&&!vis[i][h]){
+12                vis[i][h]=true;
+13                hlp(grid,vis,i,h);
+14            }
+15        }
+16        h=grid.size()-1;
+17        for(int i=1;i<(grid[0].size()-1);i++){
+18            if(grid[0][i]==1&&!vis[0][i]){
+19                vis[0][i]=true;
+20                hlp(grid,vis,0,i);
+21            }
+22            if(grid[h][i]==1&&!vis[h][i]){
+23                vis[h][i]=true;
+24                hlp(grid,vis,h,i);
+25            }
+26        }
+27        int ans=0;
+28        for(int i=0;i<grid.size();i++){
+29            for(int j=0;j<grid[0].size();j++){
+30                if(grid[i][j]==1&&!vis[i][j]){
+31                    ans++;
+32                }
+33            }
+34        }
+35        return ans;
+36    }
+37    void hlp(vector<vector<int>>& mat,vector<vector<bool>>& vis,int i,int j){
+38        queue<pair<int,int>> a;
+39        a.push({i,j});
+40        while(!a.empty()){
+41            pair<int,int> p=a.front();
+42            a.pop();
+43            if((p.first+1)<mat.size()&&!vis[p.first+1][p.second]&&mat[p.first+1][p.second]==1){
+44                vis[p.first+1][p.second]=true;
+45                a.push({p.first+1,p.second});
+46            }
+47            if((p.second+1)<mat[0].size()&&!vis[p.first][p.second+1]&&mat[p.first][p.second+1]==1){
+48                vis[p.first][p.second+1]=true;
+49                a.push({p.first,p.second+1});
+50            }
+51            if((p.second-1)>=0&&!vis[p.first][p.second-1]&&mat[p.first][p.second-1]==1){
+52                vis[p.first][p.second-1]=true;
+53                a.push({p.first,p.second-1});
+54            }
+55            if((p.first-1)>=0&&!vis[p.first-1][p.second]&&mat[p.first-1][p.second]==1){
+56                vis[p.first-1][p.second]=true;
+57                a.push({p.first-1,p.second});
+58            }
+59        }
+60    }
+61};
