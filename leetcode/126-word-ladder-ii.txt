@@ -1,0 +1,66 @@
+1class Solution {
+2public:
+3    vector<vector<string>> ans;
+4    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+5        unordered_map<string,bool> m;
+6        for(string i:wordList){
+7            m[i]=false;
+8        }
+9        if(!m.count(endWord)){
+10            return {};
+11        }
+12        m[beginWord]=true;
+13        unordered_map<string,vector<string>> h;
+14        queue<string> q;
+15        q.push(beginWord);
+16        bool an=false;
+17        while(!q.empty()){
+18            queue<string> p;
+19            unordered_set<string> y;
+20            while(!q.empty()){
+21                string u=q.front();
+22                q.pop();
+23                for(int j=0;j<u.size();j++){
+24                    string f=u;
+25                    for(char i='a';i<='z';i++){
+26                        f[j]=i;
+27                        if(f==endWord){
+28                            h[f].push_back(u);
+29                            an=true;
+30                        }else if(m.count(f)&&!m[f]){
+31                            h[f].push_back(u);
+32                            if(!y.count(f)){
+33                                y.insert(f);
+34                                p.push(f);
+35                            }
+36                        }
+37                    }
+38                }
+39            }
+40            if(an){
+41                break;
+42            }
+43            while(!p.empty()){
+44                q.push(p.front());
+45                m[p.front()]=true;
+46                p.pop();
+47            }
+48
+49        }
+50        for(string j:h[endWord]){
+51            hlp(h,j,{endWord},beginWord);
+52        }
+53        return ans;
+54    }
+55    void hlp(unordered_map<string,vector<string>>& h,string s,vector<string> a,string b){
+56        a.push_back(s);
+57        if(s==b){
+58            reverse(a.begin(),a.end());
+59            ans.push_back(a);
+60            return;
+61        }
+62        for(string u:h[s]){
+63            hlp(h,u,a,b);
+64        }
+65    }
+66};
