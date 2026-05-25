@@ -1,0 +1,45 @@
+1class Solution {
+2public:
+3    bool canReach(string st, int minJump, int maxJump) {
+4        if(st[st.size()-1]!='0'){
+5            return false;
+6        }
+7        queue<pair<int,int>> dp;
+8        dp.push({0,0});
+9        while(!dp.empty()){
+10            pair<int,int> cur=dp.front();
+11            dp.pop();
+12            for(int i=cur.first;i<=cur.second;i++){
+13                if(st[i]=='0'){
+14                    int s=i+minJump;
+15                    int e=min((i+maxJump),(int)(st.size()-1));
+16                    if(s>e){
+17                        return false;
+18                    }
+19                    if(e==(st.size()-1)){
+20                        return true;
+21                    }
+22                    if(dp.empty()){
+23                        if(cur.second>=s){
+24                            if(s!=e){
+25                                dp.push({cur.second+1,e});
+26                            }
+27                            
+28                        }else{
+29                            dp.push({s,e});
+30                        }
+31                    }else{
+32                        if(dp.back().second>=s){
+33                            if(s!=e){
+34                                dp.push({dp.back().second+1,e});
+35                            }
+36                        }else{
+37                            dp.push({s,e});
+38                        }
+39                    }
+40                }
+41            }
+42        }
+43        return false;
+44    }
+45};
