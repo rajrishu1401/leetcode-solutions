@@ -1,0 +1,64 @@
+1class Solution {
+2public:
+3    struct trie{
+4        trie* val[2]={nullptr};
+5    };
+6    trie* start;
+7    
+8    vector<int> maximizeXor(vector<int>& nums, vector<vector<int>>& queries) {
+9        sort(nums.begin(),nums.end());
+10        for(int i=0;i<queries.size();i++){
+11            queries[i].push_back(i);
+12        }
+13        sort(queries.begin(),queries.end(),[](vector<int>& a,vector<int>& b){
+14            return a[1]<b[1];
+15        });
+16        start=new trie();
+17        vector<int> answer(queries.size());
+18        int j=0;
+19        for(int i=0;i<queries.size();i++){
+20            
+21            while(j<nums.size()&&queries[i][1]>=nums[j]){
+22                insert(nums[j]);
+23                j++;
+24            }
+25            if(j==0){
+26                answer[queries[i][2]]=-1;
+27            }else{
+28                answer[queries[i][2]]=srch(queries[i][0]);
+29            }
+30        }
+31        return answer;
+32    }
+33    int srch(int n){
+34        trie* curr=start;
+35        string s = bitset<32>(n).to_string();
+36        int ans=0;
+37        int v=31;
+38        for(char i:s){
+39            int y=i-'0';
+40            y++;
+41            y%=2;
+42            //cout<<y<<endl;
+43            if(curr->val[y]!=nullptr){
+44                ans+=pow(2,v);
+45            }else{
+46                y++;
+47                y%=2;
+48            }
+49            curr=curr->val[y];
+50            v--;
+51        }
+52        return ans;
+53    }
+54    void insert(int u) {
+55        trie* curr=start;
+56        string s = bitset<32>(u).to_string();
+57        for(char i:s){
+58            if(curr->val[i-'0']==nullptr){
+59                curr->val[i-'0']=new trie();
+60            }
+61            curr=curr->val[i-'0'];
+62        }
+63    }
+64};
