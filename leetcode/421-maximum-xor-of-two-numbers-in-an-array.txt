@@ -1,0 +1,49 @@
+1class Solution {
+2public:
+3    struct trie{
+4        trie* val[2]={nullptr};
+5    };
+6    trie* start;
+7    int answer=0;
+8    int findMaximumXOR(vector<int>& nums) {
+9        start=new trie();
+10        for(int i:nums){
+11            insert(i);
+12        }
+13        for(int i:nums){
+14            srch(i);
+15        }
+16        return answer;
+17    }
+18    void srch(int n){
+19        trie* curr=start;
+20        string s = bitset<32>(n).to_string();
+21        int ans=0;
+22        int v=31;
+23        for(char i:s){
+24            int y=i-'0';
+25            y++;
+26            y%=2;
+27            //cout<<y<<endl;
+28            if(curr->val[y]!=nullptr){
+29                ans+=pow(2,v);
+30            }else{
+31                y++;
+32                y%=2;
+33            }
+34            curr=curr->val[y];
+35            v--;
+36        }
+37        answer=max(answer,ans);
+38    }
+39    void insert(int u) {
+40        trie* curr=start;
+41        string s = bitset<32>(u).to_string();
+42        for(char i:s){
+43            if(curr->val[i-'0']==nullptr){
+44                curr->val[i-'0']=new trie();
+45            }
+46            curr=curr->val[i-'0'];
+47        }
+48    }
+49};
