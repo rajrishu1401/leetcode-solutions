@@ -1,0 +1,42 @@
+1class Solution {
+2public:
+3    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+4        if(grid[0][0]!=0){
+5            return -1;
+6        }
+7        int n=grid.size();
+8        if(n==1){
+9            return 1;
+10        }
+11        vector<vector<bool>> v(n,vector<bool>(n));
+12        queue<pair<int,int>> q;
+13        q.push({0,0});
+14        v[0][0]=true;
+15        vector<pair<int,int>> r={{1,1},{1,0},{0,1},{-1,-1},{-1,1},{-1,0},{0,-1},{1,-1}};
+16        int ans=1;
+17        while(!q.empty()){
+18            queue<pair<int,int>> p;
+19            while(!q.empty()){
+20                pair<int,int> u=q.front();
+21                q.pop();
+22                for(pair<int,int> i:r){
+23                    int f=u.first+i.first;
+24                    int s=u.second+i.second;
+25                    //cout<<f<<"  "<<s<<endl;
+26                    
+27                    if(f>=0&&f<n&&s>=0&&s<n&&grid[f][s]==0&&!v[f][s]){
+28                        if(f==(n-1)&&s==f){
+29                            return ans+1;
+30                        }
+31                        //cout<<"here"<<endl;
+32                        v[f][s]=true;
+33                        p.push({f,s});
+34                    }
+35                }
+36            }
+37            q=move(p);
+38            ans++;
+39        }
+40        return -1;
+41    }
+42};
