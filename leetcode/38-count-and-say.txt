@@ -1,0 +1,26 @@
+1class Solution {
+2public:
+3    string countAndSay(int n) {
+4        string s="1";
+5        n--;
+6        while(n){
+7            string u="";
+8            int c=0;
+9            int i=1;
+10            for(;i<s.size();i++){
+11                if(s[i-1]!=s[i]){
+12                    int f=i-c;
+13                    u+=to_string(f);
+14                    u+=s[i-1];
+15                    c=i;
+16                }
+17            }
+18            int f=i-c;
+19            u+=to_string(f);
+20            u+=s[i-1];
+21            n--;
+22            s=u;
+23        }
+24        return  s;
+25    }
+26};
