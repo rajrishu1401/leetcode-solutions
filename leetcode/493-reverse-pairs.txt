@@ -1,0 +1,60 @@
+1class Solution {
+2public:
+3    int ans=0;
+4    int reversePairs(vector<int>& nums) {
+5        sot(nums,0,nums.size()-1);
+6        return ans;
+7    }
+8
+9    void sot(vector<int>& nums,int s,int e){
+10        if(s>=e){
+11            return;
+12        }
+13        int mid=(s+e)/2;
+14        sot(nums,s,mid);
+15        sot(nums,mid+1,e);
+16        merge(nums,s,mid,e);
+17    }
+18    void merge(vector<int>& nums,int s,int mid,int e){
+19        vector<long long> left;
+20        for(int i=s;i<=mid;i++){
+21            left.push_back(nums[i]);
+22        }
+23        vector<long long> right;
+24        for(int i=mid+1;i<=e;i++){
+25            right.push_back(nums[i]);
+26        }
+27        int l1=0;
+28        int l2=0;
+29        while(l1<left.size()&&l2<right.size()){
+30            if(left[l1]>(2*right[l2])){
+31                ans+=(left.size()-l1);
+32                l2++;
+33            }else{
+34                l1++;
+35            }
+36        }
+37        l1=0;
+38        l2=0;
+39        while(l1<left.size()&&l2<right.size()){
+40            if(left[l1]>right[l2]){
+41                nums[s]=right[l2];
+42                l2++;
+43            }else{
+44                nums[s]=left[l1];
+45                l1++;
+46            }
+47            s++;
+48        }
+49        while(l1<left.size()){
+50            nums[s]=left[l1];
+51            l1++;
+52            s++;
+53        }
+54        while(l2<right.size()){
+55            nums[s]=right[l2];
+56            l2++;
+57            s++;
+58        }
+59    }
+60};
