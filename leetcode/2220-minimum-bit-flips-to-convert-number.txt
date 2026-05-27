@@ -1,0 +1,7 @@
+1class Solution {
+2public:
+3    int minBitFlips(int start, int goal) {
+4        int u=__builtin_popcount(start^goal);
+5        return u;
+6    }
+7};
