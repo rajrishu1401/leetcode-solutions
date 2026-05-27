@@ -1,0 +1,27 @@
+1class Solution {
+2public:
+3    int numberOfSpecialChars(string word) {
+4        unordered_map<char,bool> l;
+5        unordered_set<char> b;
+6        int ans=0;
+7        for(char i:word){
+8            if(i>='A'&&i<='Z'){
+9                b.insert(i);
+10                if(l.count(i+32)&&l[i+32]){
+11                    ans++;
+12                    l[i+32]=false;
+13                }
+14            }else{
+15                if(b.count(i-32)){
+16                    if(l.count(i)){
+17                        l.erase(i);
+18                        ans--;
+19                    }
+20                }else{
+21                    l[i]=true;
+22                }
+23            }
+24        }
+25        return ans;
+26    }
+27};
