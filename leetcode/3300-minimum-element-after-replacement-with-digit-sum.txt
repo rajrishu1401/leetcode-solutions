@@ -1,0 +1,16 @@
+1class Solution {
+2public:
+3    int minElement(vector<int>& nums) {
+4        int ans=INT_MAX;
+5        for(int i=0;i<nums.size();i++){
+6            int u=0;
+7            while(nums[i]){
+8                u+=(nums[i]%10);
+9                nums[i]/=10;
+10            }
+11            ans=min(ans,u);
+12        }
+13        return ans;
+14        
+15    }
+16};
