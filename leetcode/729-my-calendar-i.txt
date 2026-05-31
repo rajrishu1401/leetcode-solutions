@@ -1,0 +1,29 @@
+1class MyCalendar {
+2public:
+3    set<pair<int,int>> s;
+4    MyCalendar() {
+5        
+6    }
+7    
+8    bool book(int sT, int eT) {
+9        auto it=s.lower_bound({sT,eT});
+10        if(it!=s.begin()){
+11            auto pre=prev(it);
+12            if(pre->second>sT){
+13                return false;
+14            }
+15        }
+16        if(it!=s.end()&&it->first<eT){
+17            return false;
+18        }else{
+19            s.insert({sT,eT});
+20        }
+21        return true;
+22    }
+23};
+24
+25/**
+26 * Your MyCalendar object will be instantiated and called as such:
+27 * MyCalendar* obj = new MyCalendar();
+28 * bool param_1 = obj->book(startTime,endTime);
+29 */
