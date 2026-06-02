@@ -1,0 +1,47 @@
+1class Solution {
+2public:
+3    int findTheCity(int n, vector<vector<int>>& edges, int dis) {
+4        vector<vector<long long>> m(n,vector<long long>(n,INT_MAX));
+5        vector<int> c(n,0);
+6        for(vector<int> i:edges){
+7            if(i[2]<=dis){
+8                m[i[0]][i[1]]=i[2];
+9                m[i[1]][i[0]]=i[2];
+10            }
+11        }
+12        for(int i=0;i<n;i++){
+13            for(int j=0;j<n;j++){
+14                if(j==i){
+15                    continue;
+16                }
+17                for(int k=0;k<n;k++){
+18                    if(k==i||j==k){
+19                        continue;
+20                    }
+21                    long long u=m[j][i]+m[i][k];
+22                    if(u>dis){
+23                        continue;
+24                    }
+25                    m[j][k]=min(m[j][k],u);
+26                }
+27            }
+28        }
+29        for(int i=0;i<n;i++){
+30            for(int j=i+1;j<n;j++){
+31                if(m[i][j]<=dis){
+32                    c[i]++;
+33                    c[j]++;
+34                }
+35            }
+36        }
+37        int h=c[0];
+38        int ans=0;
+39        for(int i=1;i<n;i++){
+40            if(h>=c[i]){
+41                ans=i;
+42                h=c[i];
+43            }
+44        }
+45        return ans;
+46    }
+47};
