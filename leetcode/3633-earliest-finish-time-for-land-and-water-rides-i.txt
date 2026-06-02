@@ -1,0 +1,27 @@
+1class Solution {
+2public:
+3    int earliestFinishTime(vector<int>& ls, vector<int>& ld, vector<int>& ws, vector<int>& wd) {
+4        int ans=INT_MAX;
+5        for(int i=0;i<ls.size();i++){
+6            for(int j=0;j<ws.size();j++){
+7                int u=0;
+8                if(ls[i]>ws[j]){
+9                    if((ws[j]+wd[j])<ls[i]){
+10                        u=ls[i]+ld[i];
+11                    }else{
+12                        u=ld[i]+wd[j]+ws[j];
+13                    }
+14                    ans=min(ans,u);
+15                }else{
+16                    if((ls[i]+ld[i])<ws[j]){
+17                        u=ws[j]+wd[j];
+18                    }else{
+19                        u=ld[i]+wd[j]+ls[i];
+20                    }
+21                    ans=min(ans,u);
+22                }
+23            }
+24        }
+25        return ans;
+26    }
+27};
