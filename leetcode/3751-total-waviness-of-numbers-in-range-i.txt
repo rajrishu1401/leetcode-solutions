@@ -1,0 +1,64 @@
+1class Solution {
+2public:
+3    int totalWaviness(int num1, int num2) {
+4        if(num1<100){
+5            num1=100;
+6        }
+7        if(num1>num2){
+8            return 0;
+9        }
+10        int n=log10(num2)+1;
+11        vector<int> d(n);
+12        int cd=log10(num1)+1;
+13        cd=(n-cd);
+14        int c=num2-num1;
+15        int n1=num1;
+16        int i=n-1;
+17        while(n1){
+18            d[i]=n1%10;
+19            n1/=10;
+20            i--;
+21        }
+22        int t=cd+1;
+23        int a=0;
+24        while(t<n-1){
+25            if(d[t]>d[t+1]&&d[t]>d[t-1]){
+26                a++;
+27            }else if(d[t]<d[t+1]&&d[t]<d[t-1]){
+28                a++;
+29            }
+30            t++;
+31        }
+32        int ans=a;
+33        while(c){
+34            int r=1;
+35            int j=n-1;
+36            for(;j>=0&&r!=0;j--){
+37                if((d[j]+r)>9){
+38                    d[j]=0;
+39                    r=1;
+40                }else{
+41                    d[j]++;
+42                    r=0;
+43                }
+44            }
+45            j++;
+46            if(j<cd){
+47                cd=j;
+48            }
+49            int t=cd+1;
+50            int a=0;
+51            while(t!=n-1){
+52                if(d[t]>d[t+1]&&d[t]>d[t-1]){
+53                    a++;
+54                }else if(d[t]<d[t+1]&&d[t]<d[t-1]){
+55                    a++;
+56                }
+57                t++;
+58            }
+59            c--;
+60            ans+=a;
+61        }
+62        return ans;
+63    }
+64};
