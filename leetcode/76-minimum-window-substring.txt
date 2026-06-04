@@ -1,0 +1,54 @@
+1class Solution {
+2public:
+3    string minWindow(string s, string ta) {
+4        unordered_map<char,int> m;
+5        int t=ta.size();
+6        for(char c:ta){
+7            m[c]++;
+8        }
+9        int ans=INT_MAX;
+10        string a="";
+11        unordered_map<char,queue<int>> v;
+12        set<int> u;
+13        for(int i=0;i<s.size();i++){
+14            if(m.count(s[i])){
+15                if(m[s[i]]>0){
+16                    m[s[i]]--;
+17                    t--;
+18                    v[s[i]].push(i);
+19                    u.insert(i);
+20                    if(t==0){
+21                        int it=*u.begin();
+22                        int l=*u.rbegin();
+23                        if(ans>(l-it)){
+24                            ans=l-it;
+25                            a=s.substr(it,ans+1);
+26                        }
+27                        m[s[it]]++;
+28                        v[s[it]].pop();
+29                        u.erase(it);
+30                        t=1;
+31                    }
+32                }else{
+33                    int it=*u.begin();
+34                    if(t==0&&s[it]==s[i]){
+35                        u.erase(it);
+36                        it=*u.begin();
+37                        if(ans>(i-it)){
+38                            ans=i-it;
+39                            a=s.substr(it,ans+1);
+40                        }
+41                    }else{
+42                        int o=v[s[i]].front();
+43                        u.erase(o);
+44                    }
+45                    v[s[i]].pop();
+46                    v[s[i]].push(i);
+47                    u.insert(i);
+48                }
+49            }
+50            
+51        }
+52        return a;
+53    }
+54};
