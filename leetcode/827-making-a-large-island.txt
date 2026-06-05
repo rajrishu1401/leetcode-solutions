@@ -1,0 +1,85 @@
+1class DJS{
+2public:
+3    vector<int> siz;
+4    vector<int> parent;
+5    DJS(int n){
+6        siz.resize(n+1,1);
+7        parent.resize(n+1);
+8        for(int i=0;i<=n;i++){
+9            parent[i]=i;
+10        }
+11    }
+12    int par(int n){
+13        if(parent[n]==n){
+14            return n;
+15        }
+16        return parent[n]=par(parent[n]);
+17    }
+18    void join(int a,int b){
+19        int pa=par(a);
+20        int pb=par(b);
+21        if(pa==pb){
+22            return;
+23        }
+24        if(siz[pa]>siz[pb]){
+25            parent[pb]=pa;
+26            siz[pa]+=siz[pb];
+27        }else{
+28            parent[pa]=pb;
+29            siz[pb]+=siz[pa];
+30        }
+31    }
+32    int size(int n){
+33        return siz[par(n)];
+34    }
+35};
+36
+37class Solution {
+38public:
+39    int largestIsland(vector<vector<int>>& grid) {
+40        DJS d(grid.size()*grid.size());
+41        unordered_map<int,vector<int>> r;
+42        vector<pair<int,int>> p={{0,1},{1,0},{-1,0},{0,-1}};
+43        for(int i=0;i<grid.size();i++){
+44            for(int j=0;j<grid.size();j++){
+45                int k=i*grid.size();
+46                k+=j;
+47                if(grid[i][j]==1){
+48                    for(pair<int,int> l:p){
+49                        int i1=i+l.first;
+50                        int j1=j+l.second;
+51                        if(i1>=0&&i1<grid.size()&&j1>=0&&j1<grid.size()&&grid[i1][j1]==1){
+52                            int k1=i1*grid.size();
+53                            k1+=j1;
+54                            d.join(k,k1);
+55                        }
+56                    }
+57                }else{
+58                    for(pair<int,int> l:p){
+59                        int i1=i+l.first;
+60                        int j1=j+l.second;
+61                        if(i1>=0&&i1<grid.size()&&j1>=0&&j1<grid.size()&&grid[i1][j1]==1){
+62                            int k1=i1*grid.size();
+63                            k1+=j1;
+64                            r[k].push_back(k1);
+65                        }
+66                    }
+67                }
+68            }
+69        }
+70        int ans=d.size(0);
+71        for(auto t:r){
+72            unordered_set<int> g;
+73            for(int i:t.second){
+74                int u=d.par(i);
+75                g.insert(u);
+76            }
+77            int a=0;
+78            for(int i:g){
+79                a+=d.size(i);
+80            }
+81            ans=max(ans,a+1);
+82        }
+83        return ans;
+84    }
+85};
