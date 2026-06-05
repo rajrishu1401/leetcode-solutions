@@ -1,0 +1,31 @@
+1class Solution {
+2public:
+3    string simplifyPath(string path) {
+4        stringstream ss(path);
+5        string u;
+6        deque<string> s;
+7        s.push_back("");
+8        while(getline(ss,u,'/')){
+9            if(u=="."||u==""){
+10                continue;
+11            }
+12            if(u==".."){
+13                if(s.size()!=1)
+14                s.pop_back();
+15            }else{
+16                s.push_back(u);
+17            }
+18        }
+19        s.pop_front();
+20        string ans="";
+21        while(!s.empty()){
+22            ans+="/";
+23            ans+=s.front();
+24            s.pop_front();
+25        }
+26        if(ans==""){
+27            ans="/";
+28        }
+29        return ans;
+30    }
+31};
