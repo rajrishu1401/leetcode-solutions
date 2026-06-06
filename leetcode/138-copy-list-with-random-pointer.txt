@@ -1,0 +1,47 @@
+1/*
+2// Definition for a Node.
+3class Node {
+4public:
+5    int val;
+6    Node* next;
+7    Node* random;
+8    
+9    Node(int _val) {
+10        val = _val;
+11        next = NULL;
+12        random = NULL;
+13    }
+14};
+15*/
+16
+17class Solution {
+18public:
+19    Node* copyRandomList(Node* head) {
+20        if(head==nullptr){
+21            return nullptr;
+22        }
+23        unordered_map<Node*,Node*> m;
+24        Node* curr=head;
+25        Node* newCurr=new Node(head->val);
+26        m[head]=newCurr;
+27        m[nullptr]=nullptr;
+28       
+29        while(curr!=nullptr){
+30            if(m.count(curr->random)){
+31                newCurr->random=m[curr->random];
+32            }else{
+33                newCurr->random=new Node(curr->random->val);
+34                m[curr->random]=newCurr->random;
+35            }
+36            if(m.count(curr->next)){
+37                newCurr->next=m[curr->next];
+38            }else{
+39                newCurr->next=new Node(curr->next->val);
+40                m[curr->next]=newCurr->next;
+41            }
+42            newCurr=newCurr->next;
+43            curr=curr->next;
+44        }
+45        return m[head];
+46    }
+47};
