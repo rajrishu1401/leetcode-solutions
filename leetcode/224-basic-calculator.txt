@@ -1,0 +1,199 @@
+1class Solution {
+2public:
+3    int calculate(string t) {
+4        stack<string> s;
+5        s.push("0");
+6        if(t[0]!='-'){
+7            s.push("+");
+8        }
+9        for(char i:t){
+10            //cout<<i<<endl;
+11            if(i==' '){
+12                continue;
+13            }
+14            //cout<<endl;
+15            if(i=='+'||i=='-'){
+16                if(i=='-'&&s.top()=="("){
+17                    s.push("-");
+18                    continue;
+19                }
+20                string g=s.top();
+21                s.pop();
+22                if(s.size()<2||s.top()=="("){
+23                    s.push(g);
+24                }else{
+25                    if(s.top()=="+"){
+26                        s.pop();
+27                        long long u=stoll(s.top());
+28                        s.pop();
+29                        if(!s.empty()&&s.top()=="-"){
+30                            u=-u;
+31                            s.pop();
+32                        }
+33                        u+=stoll(g);
+34                        if(u<0){
+35                            s.push("-");
+36                            u=-u;
+37                        }
+38                        s.push(to_string(u));
+39                    }else if(s.top()=="-"){
+40                        s.pop();
+41                        if(s.top()=="("){
+42                            s.push("-");
+43                            s.push(g);
+44                        }else{
+45                            long long u=stoll(s.top());
+46                            s.pop();
+47                            if(!s.empty()&&s.top()=="-"){
+48                                u=-u;
+49                                s.pop();
+50                            }
+51                            u-=stoll(g);
+52                            if(u<0){
+53                                s.push("-");
+54                                u=-u;
+55                            }
+56                            s.push(to_string(u));
+57                        }
+58                        
+59                    }
+60                }
+61                //cout<<" sfter sum: "<<s.top()<<endl;
+62                s.push(string()+i);
+63                
+64            }else if(i==')'){
+65                string g=s.top();
+66                s.pop();
+67                if(s.top()=="("){
+68                    s.pop();
+69                    s.push(g);
+70                }else{
+71                    if(s.top()=="+"){
+72                        s.pop();
+73                        long long u=stoll(s.top());
+74                        s.pop();
+75                        if(s.top()=="-"){
+76                            u=-u;
+77                            s.pop();
+78                        }
+79                        s.pop();
+80                        u+=stoll(g);
+81                        if(u<0){
+82                            if(!s.empty()){
+83                                if(s.top()=="-"){
+84                                    s.pop();
+85                                    if(!s.empty()&&s.top()!="(")
+86                                    s.push("+");
+87                                }else if(s.top()=="+"){
+88                                    s.pop();
+89                                    s.push("-");
+90                                }else{
+91                                    s.push("-");
+92                                }
+93                            }else{
+94                                s.push("-");
+95                            }
+96                            u=-u;
+97                        }
+98                        s.push(to_string(u));
+99                    }else if(s.top()=="-"){
+100                        s.pop();
+101                        if(s.top()=="("){
+102                            s.pop();
+103                            if(!s.empty()){
+104                                if(s.top()=="+"){
+105                                    s.pop();
+106                                    s.push("-");
+107                                }else{
+108                                    s.pop();
+109                                    if(!s.empty()&&s.top()!="(")s.push("+");
+110                                }
+111                            }
+112                            s.push(g);
+113                        }else{
+114                            long long u=stoll(s.top());
+115                            s.pop();
+116                            if(s.top()=="-"){
+117                                u=-u;
+118                                s.pop();
+119                            }
+120                            s.pop();
+121                            u-=stoll(g);
+122                            if(u<0){
+123                                if(!s.empty()){
+124                                    if(s.top()=="-"){
+125                                        s.pop();
+126                                        if(!s.empty()&&s.top()!="(")
+127                                        s.push("+");
+128                                    }else if(s.top()=="+"){
+129                                        s.pop();
+130                                        s.push("-");
+131                                    }else{
+132                                        s.push("-");
+133                                    }
+134                                }else{
+135                                    s.push("-");
+136                                }
+137                                u=-u;
+138                            }
+139                            s.push(to_string(u));
+140                        }
+141                        
+142                    }
+143                }
+144                //cout<<" sfter sum: "<<s.top()<<endl;
+145            }else if(i!='('){
+146                if(s.top()!="+"&&s.top()!="-"&&s.top()!="("){
+147                    s.top()+=i;
+148                }else{
+149                    s.push(string()+i);
+150                }
+151            }else{
+152                s.push(string()+i);
+153            }
+154        }
+155        if(s.size()==1){
+156            return stoll(s.top());
+157        }
+158        if(s.size()==2){
+159            return -stoll(s.top());
+160        }
+161        string g=s.top();
+162        s.pop();
+163        if(s.top()=="+"){
+164            s.pop();
+165            long long u=stoll(s.top());
+166            s.pop();
+167            if(!s.empty()&&s.top()=="-"){
+168                u=-u;
+169                s.pop();
+170            }
+171            u+=stoll(g);
+172            if(u<0){
+173                s.push("-");
+174                u=-u;
+175            }
+176            s.push(to_string(u));
+177        }else if(s.top()=="-"){
+178            s.pop();
+179            
+180            long long u=stoll(s.top());
+181            s.pop();
+182            if(!s.empty()&&s.top()=="-"){
+183                u=-u;
+184                s.pop();
+185            }
+186            u-=stoll(g);
+187            if(u<0){
+188                s.push("-");
+189                u=-u;
+190            }
+191            s.push(to_string(u));
+192            
+193        }
+194        if(s.size()==1){
+195            return stoll(s.top());
+196        }
+197        return -stoll(s.top());
+198    }
+199};
