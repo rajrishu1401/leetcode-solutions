@@ -1,0 +1,88 @@
+1class LRUCache {
+2public:
+3    struct node{
+4        int val;
+5        int key;
+6        node* next=nullptr;
+7        node* pre=nullptr;
+8        node(int v,int k){
+9            val=v;
+10            key=k;
+11        }
+12    };
+13    node* fst=nullptr;
+14    node* lst=nullptr;
+15    int c;
+16    int co;
+17    unordered_map<int,node*> m;
+18    LRUCache(int capacity) {
+19        c=capacity;
+20        co=0;
+21    }
+22    
+23    int get(int key) {
+24        if(m.count(key)){
+25            if(m[key]!=fst){
+26                m[key]->pre->next=m[key]->next;
+27                if(m[key]->next!=nullptr){
+28                    m[key]->next->pre=m[key]->pre;
+29                }else{
+30                    lst=m[key]->pre;
+31                }
+32                m[key]->next=fst;
+33                fst->pre=m[key];
+34                m[key]->pre=nullptr;
+35                fst=m[key];
+36            }
+37            return m[key]->val;
+38        }
+39        return -1;
+40    }
+41    
+42    void put(int key, int value) {
+43        if(m.count(key)){
+44            m[key]->val=value;
+45            if(m[key]!=fst){
+46                m[key]->pre->next=m[key]->next;
+47                if(m[key]->next!=nullptr){
+48                    m[key]->next->pre=m[key]->pre;
+49                }else{
+50                    lst=m[key]->pre;
+51                }
+52                m[key]->next=fst;
+53                fst->pre=m[key];
+54                m[key]->pre=nullptr;
+55                fst=m[key];
+56            }
+57        }else{
+58            if(c>0){
+59                m[key]=new node(value,key);
+60                if(fst==nullptr){
+61                    fst=m[key];
+62                    lst=fst;
+63                }else{
+64                    m[key]->next=fst;
+65                    fst->pre=m[key];
+66                    fst=m[key];
+67                }
+68                c--;
+69            }else{
+70                m[key]=new node(value,key);
+71                m[key]->next=fst;
+72                fst->pre=m[key];
+73                fst=m[key];
+74                m.erase(lst->key);
+75                lst=lst->pre;
+76                lst->next=nullptr;
+77            }
+78        }
+79        
+80    }
+81};
+82
+83/**
+84 * Your LRUCache object will be instantiated and called as such:
+85 * LRUCache* obj = new LRUCache(capacity);
+86 * int param_1 = obj->get(key);
+87 * obj->put(key,value);
+88 */
