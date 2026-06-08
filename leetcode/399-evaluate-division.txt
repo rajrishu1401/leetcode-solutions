@@ -1,0 +1,108 @@
+1class DJS{
+2public:
+3    vector<int> rank;
+4    vector<int> parent;
+5    DJS(int n){
+6        rank.resize(n+1);
+7        parent.resize(n+1);
+8        for(int i=0;i<=n;i++){
+9            parent[i]=i;
+10        }
+11    }
+12    int par(int n){
+13        if(parent[n]==n){
+14            return n;
+15        }
+16        return parent[n]=par(parent[n]);
+17    }
+18
+19    void join(int a,int b){
+20        int ua=par(a);
+21        int ub=par(b);
+22        if(ua==ub){
+23            return;
+24        }
+25        if(rank[ua]>rank[ub]){
+26            parent[ub]=ua;
+27        }else if(rank[ua]<rank[ub]){
+28            parent[ua]=ub;
+29        }else{
+30            parent[ua]=ub;
+31            rank[ub]++;
+32        }
+33    }
+34};
+35
+36class Solution {
+37public:
+38    vector<unordered_map<int,double>> r;
+39    vector<double> calcEquation(vector<vector<string>>& eq, vector<double>& values, vector<vector<string>>& q) {
+40        unordered_map<string,int> m;
+41        int j=0;
+42        for(int i=0;i<eq.size();i++){
+43            if(!m.count(eq[i][0])){
+44                m[eq[i][0]]=j;
+45                j++;
+46                r.push_back(unordered_map<int,double>());
+47            }
+48            if(!m.count(eq[i][1])){
+49                m[eq[i][1]]=j;
+50                j++;
+51                r.push_back(unordered_map<int,double>());
+52            }
+53            r[m[eq[i][0]]][m[eq[i][1]]]=values[i];
+54            r[m[eq[i][1]]][m[eq[i][0]]]=1/values[i];
+55        }
+56        cout<<"here"<<endl;
+57        DJS d(r.size());
+58        for(int i=0;i<eq.size();i++){
+59            d.join(m[eq[i][0]],m[eq[i][1]]);
+60        }
+61        vector<double> ans(q.size());
+62        for(int i=0;i<q.size();i++){
+63            if(!m.count(q[i][0])||!m.count(q[i][1])||(d.par(m[q[i][0]])!=d.par(m[q[i][1]]))){
+64                ans[i]=-1;
+65                continue;
+66            }
+67            if(q[i][0]==q[i][1]){
+68                ans[i]=1;
+69            }else{
+70                ans[i]=hlp(m[q[i][0]],m[q[i][1]]);
+71            }
+72            cout<<ans[i]<<endl;
+73            
+74        }
+75        return ans;
+76    }
+77
+78    double hlp(int a,int b){
+79        queue<pair<int,double>> q;
+80        vector<bool> v(r.size());
+81        v[a]=true;
+82        for(auto i:r[a]){
+83            if(i.first==b){
+84                return i.second;
+85            }
+86            v[i.first]=true;
+87            q.push({i.first,i.second});
+88        }
+89        while(!q.empty()){
+90            pair<int,double> u=q.front();
+91            q.pop();
+92            for(auto i:r[u.first]){
+93                if(i.first==b){
+94                    r[a][b]=i.second*u.second;
+95                    r[b][a]=1/(i.second*u.second);
+96                    return i.second*u.second;
+97                }
+98                if(!v[i.first]){
+99                    v[i.first]=true;
+100                    r[a][i.first]=i.second*u.second;
+101                    r[i.first][a]=1/(i.second*u.second);
+102                    q.push({i.first,i.second*u.second});
+103                }
+104            }
+105        }
+106        return -1;
+107    }
+108};
