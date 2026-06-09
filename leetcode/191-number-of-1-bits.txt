@@ -1,0 +1,13 @@
+1class Solution {
+2public:
+3    int hammingWeight(int n) {
+4        int c=0;
+5        while(n){
+6            if(n&1){
+7                c++;
+8            }
+9            n=n>>1;
+10        }
+11        return c;
+12    }
+13};
