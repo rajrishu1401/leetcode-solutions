@@ -1,0 +1,35 @@
+1class Solution {
+2public:
+3    string gcdOfStrings(string str1, string str2) {
+4        if(str1==str2){
+5            return str1;
+6        }
+7        if(str1.size()<str2.size()){
+8            string u=str1;
+9            str1=str2;
+10            str2=u;
+11        }
+12        if(str2!=str1.substr(0,str2.size())){
+13            return "";
+14        }
+15        string p=str2;
+16        while(p!=""){
+17            if(hlp(p,str1)&&hlp(p,str2)){
+18                return p;
+19            }
+20            p=p.substr(0,p.size()-1);
+21        }
+22        return "";
+23
+24    }
+25    bool hlp(string p,string s){
+26        string u=p;
+27        while(u.size()<s.size()){
+28            u+=p;
+29        }
+30        if(u==s){
+31            return true;
+32        }
+33        return false;
+34    }
+35};
