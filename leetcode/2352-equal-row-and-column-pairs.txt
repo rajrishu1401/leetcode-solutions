@@ -1,0 +1,25 @@
+1class Solution {
+2public:
+3    int equalPairs(vector<vector<int>>& grid) {
+4        unordered_map<string,int> m;
+5        for(int i=0;i<grid.size();i++){
+6            string s="";
+7            for(int j=0;j<grid.size();j++){
+8                s+=to_string(grid[i][j]);
+9                s+=" ";
+10            }
+11            m[s]++;
+12        }
+13        int ans=0;
+14        for(int i=0;i<grid.size();i++){
+15            string s="";
+16            for(int j=0;j<grid.size();j++){
+17                s+=to_string(grid[j][i]);
+18                s+=" ";
+19            }
+20            ans+=m[s];
+21        }
+22        return ans;
+23
+24    }
+25};
