@@ -1,0 +1,54 @@
+1class WordDictionary {
+2public:
+3    struct trie{
+4        trie* ch[26]={nullptr};
+5        bool isEnd=false;
+6    };
+7    trie* start;
+8    WordDictionary() {
+9        start=new trie();
+10    }
+11    
+12    void addWord(string word) {
+13        trie* curr=start;
+14        for(char i:word){
+15            if(curr->ch[i-'a']==nullptr){
+16                curr->ch[i-'a']=new trie();
+17            }
+18            curr=curr->ch[i-'a'];
+19        }
+20        curr->isEnd=true;
+21    }
+22    
+23    bool search(string word) {
+24        return srch(word,start,0);
+25    }
+26    bool srch(string s,trie* curr,int i){
+27        while( i<s.size()){
+28            if(s[i]=='.'){
+29                for(int j=0;j<26;j++){
+30                    if(curr->ch[j]){
+31                        if(srch(s,curr->ch[j],i+1)){
+32                            return true;
+33                        }
+34                    }
+35                }
+36                return false;
+37            }else{
+38                if(curr->ch[s[i]-'a']==nullptr){
+39                    return false;
+40                }
+41                curr=curr->ch[s[i]-'a'];
+42                i++;
+43            }
+44        }
+45        return curr->isEnd;
+46    }
+47};
+48
+49/**
+50 * Your WordDictionary object will be instantiated and called as such:
+51 * WordDictionary* obj = new WordDictionary();
+52 * obj->addWord(word);
+53 * bool param_2 = obj->search(word);
+54 */
