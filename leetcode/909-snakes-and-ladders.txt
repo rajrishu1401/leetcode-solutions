@@ -1,0 +1,98 @@
+1class Solution {
+2public:
+3    int snakesAndLadders(vector<vector<int>>& board) {
+4        int n=board.size();
+5        if(n==1){
+6            return 0;
+7        }
+8        int a1=0;
+9        if(n&1){
+10            a1=n-1;
+11        }
+12        queue<vector<int>> q;
+13        q.push({n-1,0,1});
+14        vector<vector<pair<bool,bool>>> v(n,vector<pair<bool,bool>>(n));
+15        v[n-1][0]={true,false};
+16        int ans=1;
+17        while(!q.empty()){
+18            queue<vector<int>> p;
+19            
+20            while(!q.empty()){
+21                int i=q.front()[0];
+22                int j=q.front()[1];
+23                int c=q.front()[2];
+24                //cout<<" start:  "<<i<<"  "<<j<<endl;
+25                q.pop();
+26                int s=6;
+27                j+=c;
+28                while(s){
+29                    s--;
+30                    if(j==-1){
+31                        i--;
+32                        j=0;
+33                        c=1;
+34                    }else if(j==n){
+35                        i--;
+36                        j=n-1;
+37                        c=-1;
+38                    }
+39                    if(i==0&&j==a1){
+40                        return ans;
+41                    }
+42                    //cout<<"before: "<<i<<" "<<j<<endl;
+43                    if(board[i][j]!=-1){
+44                        //cout<<"entered: "<<i<<" "<<j<<endl;
+45                        if(!v[i][j].second){
+46                            v[i][j].second=true;
+47                            int c1;
+48                            int y=board[i][j];
+49                            int i1=y/n;
+50                            int j1;
+51                            
+52                            
+53                            if(y%n==0){
+54                                if(i1%2==0){
+55                                    j1=0;
+56                                    c1=-1;
+57                                }else{
+58                                    j1=n-1;
+59                                    c1=1;
+60                                }
+61                                i1=n-i1;
+62                                
+63                            }else{
+64                                if(i1%2==0){
+65                                    j1=(y%n)-1;
+66                                    c1=1;
+67                                }else{
+68                                    j1=n-(y%n);
+69                                    c1=-1;
+70                                }
+71                                i1=n-i1-1;
+72                            }
+73                            
+74                            //cout<<"jump: "<<i1<<" "<<j1<<endl;
+75                            if(!v[i1][j1].first){
+76                                
+77                                if(i1==0&&j1==a1){
+78                                    return ans;
+79                                }
+80                                v[i1][j1].first=true;
+81                                p.push({i1,j1,c1});
+82                            }
+83                            
+84                        }
+85                        
+86                    }else if(!v[i][j].first){
+87                        v[i][j].first=true;
+88                        p.push({i,j,c});
+89                    }
+90                    j+=c;
+91                }
+92            }
+93            q=move(p);
+94            ans++;
+95        }
+96        return -1;
+97    }
+98};
