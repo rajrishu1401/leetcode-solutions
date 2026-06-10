@@ -1,0 +1,27 @@
+1class Solution {
+2public:
+3    vector<int> asteroidCollision(vector<int>& a) {
+4        stack<int> h;
+5        vector<int> ans;
+6        for(int i:a){
+7            if(i>0){
+8                h.push(i);
+9            }else{
+10                while(!h.empty()&&h.top()<(-i)){
+11                    h.pop();
+12                }
+13                if(h.empty()){
+14                    ans.push_back(i);
+15                }else if(h.top()==(-i)){
+16                    h.pop();
+17                }
+18            }
+19        }
+20        ans.resize(h.size()+ans.size());
+21        for(int i=ans.size()-1;!h.empty();i--){
+22            ans[i]=h.top();
+23            h.pop();
+24        }
+25        return ans;
+26    }
+27};
