@@ -1,0 +1,63 @@
+1/**
+2 * Definition for singly-linked list.
+3 * struct ListNode {
+4 *     int val;
+5 *     ListNode *next;
+6 *     ListNode() : val(0), next(nullptr) {}
+7 *     ListNode(int x) : val(x), next(nullptr) {}
+8 *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+9 * };
+10 */
+11class Solution {
+12public:
+13    ListNode* sortList(ListNode* head) {
+14        if(head==nullptr||head->next==nullptr){
+15            return head;
+16        }
+17        return bs(head);
+18    }
+19
+20    ListNode* bs(ListNode* curr){
+21        if(curr->next==nullptr){
+22            return curr;
+23        }
+24        ListNode* fst=curr->next;
+25        ListNode* slw=curr;
+26        while(fst!=nullptr&&fst->next!=nullptr){
+27            slw=slw->next;
+28            fst=fst->next->next;
+29        }
+30        fst=slw->next;
+31        slw->next=nullptr;
+32        curr=bs(curr);
+33        fst=bs(fst);
+34        return merge(curr,fst);
+35    }
+36    ListNode* merge(ListNode* curr, ListNode* fst){
+37        ListNode* ans;
+38        if(curr->val<fst->val){
+39            ans=curr;
+40            curr=curr->next;
+41        }else{
+42            ans=fst;
+43            fst=fst->next;
+44        }
+45        ListNode* r=ans;
+46        while(curr!=nullptr&&fst!=nullptr){
+47            if(curr->val<fst->val){
+48                ans->next=curr;
+49                curr=curr->next;
+50            }else{
+51                ans->next=fst;
+52                fst=fst->next;
+53            }
+54            ans=ans->next;
+55        }
+56        if(curr!=nullptr){
+57            ans->next=curr;
+58        }else{
+59            ans->next=fst;
+60        }
+61        return r;
+62    }
+63};
