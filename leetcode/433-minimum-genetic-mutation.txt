@@ -1,0 +1,40 @@
+1class Solution {
+2public:
+3    int minMutation(string startGene, string endGene, vector<string>& bank) {
+4        unordered_map<string,bool> m;
+5        for(string i:bank){
+6            m[i]=false;
+7        }
+8        if(!m.count(endGene)){
+9            return -1;
+10        }
+11        vector<char> a={'A', 'C', 'G', 'T'};
+12        m[startGene]=true;
+13        queue<string> q;
+14        q.push(startGene);
+15        int ans=0;
+16        while(!q.empty()){
+17            queue<string> p;
+18            while(!q.empty()){
+19                string u=q.front();
+20                q.pop();
+21                for(int j=0;j<u.size();j++){
+22                    string f=u;
+23                    for(char i:a){
+24                        f[j]=i;
+25                        if(f==endGene){
+26                            return ans+1;
+27                        }
+28                        if(m.count(f)&&!m[f]){
+29                            m[f]=true;
+30                            p.push(f);
+31                        }
+32                    }
+33                }
+34            }
+35            q=move(p);
+36            ans++;
+37        }
+38        return -1;
+39    }
+40};
