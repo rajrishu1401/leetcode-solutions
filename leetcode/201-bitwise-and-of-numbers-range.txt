@@ -1,0 +1,27 @@
+1class Solution {
+2public:
+3    int rangeBitwiseAnd(int left, int right) {
+4        if(left==right){
+5            return left;
+6        }
+7        int i=0;
+8        int ans=0;
+9        int r=right;
+10        while(left){
+11            if(left&1){
+12                ans+=(pow(2,i));
+13            }else{
+14                if(r&1) ans=0;
+15            }
+16            r=r>>1;
+17            left=left>>1;
+18            i++;
+19        }
+20        if(i!=31){
+21            if(pow(2,i)<=right){
+22                return 0;
+23            }
+24        }
+25        return ans;
+26    }
+27};
