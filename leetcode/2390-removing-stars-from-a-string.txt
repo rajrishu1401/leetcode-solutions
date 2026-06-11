@@ -1,0 +1,21 @@
+1class Solution {
+2public:
+3    string removeStars(string s) {
+4        stack<char> st;
+5        for(char i:s){
+6            if(i=='*'){
+7                st.pop();
+8            }else{
+9                st.push(i);
+10            }
+11        }
+12        int u=st.size()-1;
+13        int si=u+1;
+14        while(!st.empty()){
+15            s[u]=st.top();
+16            st.pop();
+17            u--;
+18        }
+19        return s.substr(0,si);
+20    }
+21};
