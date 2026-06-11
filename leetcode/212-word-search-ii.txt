@@ -1,0 +1,62 @@
+1class Solution {
+2public:
+3    struct trie{
+4        trie* ch[27]={nullptr};
+5        bool isEnd=false;
+6    };
+7    trie* start;
+8    void insert(string s){
+9        trie* curr=start;
+10        for(char i:s){
+11            if(curr->ch[i-'a']==nullptr){
+12                curr->ch[i-'a']=new trie();
+13            }
+14            curr=curr->ch[i-'a'];
+15        }
+16        curr->isEnd=true;
+17    }
+18    unordered_set<string> ans;
+19    int m;
+20    int n;
+21    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+22        start=new trie();
+23        for(string w:words){
+24            insert(w);
+25        }
+26        m=board.size();
+27        n=board[0].size();
+28        for(int i=0;i<m;i++){
+29            for(int j=0;j<n;j++){
+30                if(start->ch[board[i][j]-'a']!=nullptr){
+31                    hlp(board,start->ch[board[i][j]-'a'],i,j,string()+board[i][j]);
+32                }
+33            }
+34        }
+35        vector<string> answer;
+36        for(string st:ans){
+37            answer.push_back(st);
+38        }
+39        return answer;
+40    }
+41
+42    void hlp(vector<vector<char>>& board,trie* curr,int i, int j,string s){
+43        if(curr->isEnd){
+44            ans.insert(s);
+45        }
+46        char t=board[i][j];
+47        board[i][j]='{';
+48        if(i<(m-1)&&curr->ch[board[i+1][j]-'a']){
+49            hlp(board,curr->ch[board[i+1][j]-'a'],i+1,j,s+board[i+1][j]);
+50        }
+51        if(i>0&&curr->ch[board[i-1][j]-'a']){
+52            hlp(board,curr->ch[board[i-1][j]-'a'],i-1,j,s+board[i-1][j]);
+53        }
+54        if(j<(n-1)&&curr->ch[board[i][j+1]-'a']){
+55            hlp(board,curr->ch[board[i][j+1]-'a'],i,j+1,s+board[i][j+1]);
+56        }
+57        if(j>0&&curr->ch[board[i][j-1]-'a']){
+58            hlp(board,curr->ch[board[i][j-1]-'a'],i,j-1,s+board[i][j-1]);
+59        }
+60        board[i][j]=t;
+61    }
+62};
