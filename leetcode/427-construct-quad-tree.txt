@@ -1,0 +1,77 @@
+1/*
+2// Definition for a QuadTree node.
+3class Node {
+4public:
+5    bool val;
+6    bool isLeaf;
+7    Node* topLeft;
+8    Node* topRight;
+9    Node* bottomLeft;
+10    Node* bottomRight;
+11    
+12    Node() {
+13        val = false;
+14        isLeaf = false;
+15        topLeft = NULL;
+16        topRight = NULL;
+17        bottomLeft = NULL;
+18        bottomRight = NULL;
+19    }
+20    
+21    Node(bool _val, bool _isLeaf) {
+22        val = _val;
+23        isLeaf = _isLeaf;
+24        topLeft = NULL;
+25        topRight = NULL;
+26        bottomLeft = NULL;
+27        bottomRight = NULL;
+28    }
+29    
+30    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight, Node* _bottomLeft, Node* _bottomRight) {
+31        val = _val;
+32        isLeaf = _isLeaf;
+33        topLeft = _topLeft;
+34        topRight = _topRight;
+35        bottomLeft = _bottomLeft;
+36        bottomRight = _bottomRight;
+37    }
+38};
+39*/
+40
+41class Solution {
+42public:
+43    Node* construct(vector<vector<int>>& grid) {
+44        Node* head=new Node(grid[0][0],1);
+45        insert(grid,0,0,grid.size(),head);
+46        return head;
+47    }
+48
+49    void insert(vector<vector<int>>& grid,int i,int j,int s,Node* curr){
+50        if(s==1){
+51            return;
+52        }
+53        for(int u=i;u<(i+s);u++){
+54            for(int h=j;h<(j+s);h++){
+55                if(curr->val!=grid[u][h]){
+56                    curr->isLeaf=0;
+57                    break;
+58                }
+59            }
+60            if(!curr->isLeaf){
+61                break;
+62            }
+63        }
+64        if(curr->isLeaf){
+65            return;
+66        }
+67        curr->topLeft=new Node(grid[i][j],1);
+68        int ns=s/2;
+69        insert(grid,i,j,ns,curr->topLeft);
+70        curr->topRight=new Node(grid[i][j+ns],1);
+71        insert(grid,i,j+ns,ns,curr->topRight);
+72        curr->bottomLeft=new Node(grid[i+ns][j],1);
+73        insert(grid,i+ns,j,ns,curr->bottomLeft);
+74        curr->bottomRight=new Node(grid[i+ns][j+ns],1);
+75        insert(grid,i+ns,j+ns,ns,curr->bottomRight);
+76    }
+77};
