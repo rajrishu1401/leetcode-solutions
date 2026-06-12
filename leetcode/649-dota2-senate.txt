@@ -1,0 +1,43 @@
+1class Solution {
+2public:
+3    string predictPartyVictory(string senate) {
+4        int d=0;
+5        queue<char> q;
+6        unordered_map<char,int> m;
+7        for(char i:senate){
+8            q.push(i);
+9            m[i]++;
+10        }
+11        if(m.size()==1){
+12            if(q.front()=='R'){
+13                return "Radiant";
+14            }
+15            return "Dire";
+16        }
+17        while(true){
+18            if(q.front()=='R'){
+19                if(d>=0){
+20                    q.push('R');
+21                }else{
+22                    m['R']--;
+23                    if(m['R']==0){
+24                        return "Dire";
+25                    }
+26                }
+27                d++;
+28            }else{
+29                if(d<=0){
+30                    q.push('D');
+31                }else{
+32                    m['D']--;
+33                    if(m['D']==0){
+34                        return "Radiant";
+35                    }
+36                }
+37                d--;
+38            }
+39            q.pop();
+40        }
+41        return "No";
+42    }
+43};
