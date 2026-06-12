@@ -1,19 +1,37 @@
-    }    }
-
-    void hlp(TreeNode* curr,int c,bool l){    void hlp(TreeNode* curr,int c,bool l){
-        if(curr==nullptr){        if(curr==nullptr){
-            return;            return;
-        }        }
-        hlp(root->left,1,true);        hlp(root->left,1,true);
-        hlp(root->right,1,false);        hlp(root->right,1,false);
-        return ans;        return ans;
-        ans=max(ans,c);        ans=max(ans,c);
-        if(l){        if(l){
-            hlp(curr->left,1,l);            hlp(curr->left,1,l);
-            hlp(curr->right,c+1,!l);            hlp(curr->right,c+1,!l);
-        }else{        }else{
-            hlp(curr->left,c+1,!l);            hlp(curr->left,c+1,!l);
-            hlp(curr->right,1,l);            hlp(curr->right,1,l);
-        }        }
-    }    }
-};};
+1/**
+2 * Definition for a binary tree node.
+3 * struct TreeNode {
+4 *     int val;
+5 *     TreeNode *left;
+6 *     TreeNode *right;
+7 *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+8 *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+9 *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+10 * };
+11 */
+12class Solution {
+13public:
+14    int ans=0;
+15    int longestZigZag(TreeNode* root) {
+16        if(root==nullptr){
+17            return 0;
+18        }
+19        hlp(root->left,1,true);
+20        hlp(root->right,1,false);
+21        return ans;
+22    }
+23
+24    void hlp(TreeNode* curr,int c,bool l){
+25        if(curr==nullptr){
+26            return;
+27        }
+28        ans=max(ans,c);
+29        if(l){
+30            hlp(curr->left,1,l);
+31            hlp(curr->right,c+1,!l);
+32        }else{
+33            hlp(curr->left,c+1,!l);
+34            hlp(curr->right,1,l);
+35        }
+36    }
+37};
