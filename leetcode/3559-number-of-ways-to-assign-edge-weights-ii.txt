@@ -1,0 +1,110 @@
+1class Solution {
+2public:
+3    int mod=1e9+7;
+4    vector<int> assignEdgeWeights(vector<vector<int>>& edges, vector<vector<int>>& qu) {
+5        vector<vector<int>> n(edges.size()+2);
+6        for(int i=0;i<edges.size();i++){
+7            n[edges[i][0]].push_back(edges[i][1]);
+8            n[edges[i][1]].push_back(edges[i][0]);
+9        }
+10        vector<int> v(edges.size()+2);
+11        vector<vector<int>> dp(edges.size()+2,vector<int>(log2(edges.size()+2)+1,-1));
+12        queue<int> q;
+13        q.push(1);
+14        v[1]=1;
+15        int c=1;
+16        while(!q.empty()){
+17            queue<int> p;
+18            while(!q.empty()){
+19                int u=q.front();
+20                q.pop();
+21                for(int j:n[u]){
+22                    if(!v[j]){
+23                        v[j]=c;
+24                        dp[j][0]=u;
+25                        p.push(j);
+26                    }
+27                    
+28                }
+29            }
+30            q=move(p);
+31            c++;
+32        }
+33        v[1]=0;
+34        int l=0;
+35        for(int j=1;j<dp[0].size();j++){
+36            for(int i=1;i<dp.size();i++){
+37                if(dp[i][j-1]!=-1){
+38                    dp[i][j]=dp[dp[i][j-1]][j-1];
+39                }
+40            }
+41        }
+42        
+43        vector<int> ans;
+44        
+45        for(int i=0;i<qu.size();i++){
+46            int a=qu[i][0];
+47            int b=qu[i][1];
+48            int d=0;
+49            
+50            if(v[a]!=v[b]){
+51                if(v[b]>v[a]){
+52                    swap(a,b);
+53                }
+54                d=v[a]-v[b];
+55                
+56                a=hlp(dp,a,d);
+57                
+58            }
+59            
+60            if(a!=b){
+61                a=hlp2(dp,a,b);
+62                
+63                d+=(2*(v[b]-v[a]));
+64            }
+65            long long an=1;
+66            d--;
+67            
+68            while(d){
+69                if(d>30){
+70                    an*=pow(2,30);
+71                    an%=mod;
+72                    d-=30;
+73                }else{
+74                    an*=pow(2,d);
+75                    an%=mod;
+76                    break;
+77                }
+78            }
+79            
+80            ans.push_back(an);
+81        }
+82
+83        
+84        return ans;
+85        
+86    }
+87
+88    int hlp(vector<vector<int>>& dp,int s,int d){
+89        while(d){
+90            int z=log2(d);
+91            s=dp[s][z];
+92            d-=pow(2,z);
+93        }
+94        return s;
+95    }
+96    int hlp2(vector<vector<int>>& dp,int a,int b){
+97        int j=0;
+98        for(;j<dp[0].size();j++){
+99            if(dp[a][j]==dp[b][j]){
+100                break;
+101            }
+102        }
+103        if(j==0||j==1){
+104            return dp[a][j];
+105        }
+106        j--;
+107        return hlp2(dp,dp[a][j],dp[b][j]);
+108       
+109    }
+110};
