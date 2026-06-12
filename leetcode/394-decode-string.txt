@@ -1,0 +1,46 @@
+1class Solution {
+2public:
+3    string decodeString(string s) {
+4        stack<string> st;
+5        string d="";
+6        string al="";
+7        for(char i:s){
+8            if(isdigit(i)){
+9                if(al!=""){
+10                    st.push(al);
+11                    al="";
+12                }
+13                d+=i;
+14            }else if(isalpha(i)){
+15                al+=i;
+16            }else if(i=='['){
+17                st.push(d);
+18                d="";
+19                st.push("[");
+20            }else{
+21                if(st.top()!="["){
+22                    al=st.top();
+23                    st.pop();
+24                }
+25                st.pop();
+26                int u=stoi(st.top());
+27                st.pop();
+28                string a="";
+29                while(u){
+30                    a+=al;
+31                    u--;
+32                }
+33                al="";
+34                if(!st.empty()&&st.top()!="["){
+35                    al=st.top();
+36                    st.pop();
+37                }
+38                al+=a;
+39                ///cout<<al<<endl;
+40            }
+41
+42        }
+43        
+44        return al;
+45    }
+46};
