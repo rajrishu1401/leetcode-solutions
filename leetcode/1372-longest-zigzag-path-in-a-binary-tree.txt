@@ -1,0 +1,19 @@
+    }    }
+
+    void hlp(TreeNode* curr,int c,bool l){    void hlp(TreeNode* curr,int c,bool l){
+        if(curr==nullptr){        if(curr==nullptr){
+            return;            return;
+        }        }
+        hlp(root->left,1,true);        hlp(root->left,1,true);
+        hlp(root->right,1,false);        hlp(root->right,1,false);
+        return ans;        return ans;
+        ans=max(ans,c);        ans=max(ans,c);
+        if(l){        if(l){
+            hlp(curr->left,1,l);            hlp(curr->left,1,l);
+            hlp(curr->right,c+1,!l);            hlp(curr->right,c+1,!l);
+        }else{        }else{
+            hlp(curr->left,c+1,!l);            hlp(curr->left,c+1,!l);
+            hlp(curr->right,1,l);            hlp(curr->right,1,l);
+        }        }
+    }    }
+};};
