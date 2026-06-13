@@ -1,0 +1,28 @@
+1class Solution {
+2public:
+3    int ans=0;
+4    vector<vector<int>> ft;
+5    vector<vector<int>> wt;
+6    int minReorder(int n, vector<vector<int>>& connections) {
+7        ft.resize(n);
+8        wt.resize(n);
+9        for(vector<int>& i:connections){
+10            ft[i[0]].push_back(i[1]);
+11            wt[i[1]].push_back(i[0]);
+12        }
+13        hlp(0,-1,-1);
+14        return ans;
+15    }
+16    void hlp(int i,int j,int k){
+17        for(int h:ft[i]){
+18            if(k!=h){
+19                ans++;
+20                hlp(h,i,-1);
+21            }
+22            
+23        }
+24        for(int h:wt[i]){
+25            if(h!=j)hlp(h,-1,i);
+26        }
+27    }
+28};
