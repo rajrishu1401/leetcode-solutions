@@ -1,0 +1,65 @@
+1class Solution {
+2public:
+3    long long totalCost(vector<int>& costs, int k, int c) {
+4        if(c*2>=costs.size()||k==costs.size()){
+5            sort(costs.begin(),costs.end());
+6            long long ans=0;
+7            int i=0;
+8            while(k){
+9                k--;
+10                ans+=costs[i];
+11                i++;
+12            }
+13            return ans;
+14        }
+15        int i=0;
+16        int j=costs.size()-1;
+17        priority_queue<int,vector<int>,greater<int>> l;
+18        priority_queue<int,vector<int>,greater<int>> r;
+19        while(i<c){
+20            l.push(costs[i]);
+21            //cout<<costs[i]<<"  ";
+22            i++;
+23        }
+24        //cout<<endl;
+25        while(c){
+26            c--;
+27            r.push(costs[j]);
+28            //cout<<costs[j]<<"  ";
+29            j--;
+30        }
+31        //cout<<endl;
+32        long long ans=0;
+33        while(k&&!l.empty()&&!r.empty()){
+34            //cout<<l.top()<<" , "<<r.top()<<endl;
+35            if(l.top()>r.top()){
+36                ans+=r.top();
+37                r.pop();
+38                if(i<=j){
+39                    r.push(costs[j]);
+40                    j--;
+41                }
+42            }else{
+43                ans+=l.top();
+44                l.pop();
+45                if(i<=j){
+46                    l.push(costs[i]);
+47                    i++;
+48                }
+49            }
+50            //cout<<ans<<endl;
+51            k--;
+52        }
+53        while(k&&!l.empty()){
+54            ans+=l.top();
+55                l.pop();
+56                k--;
+57        }
+58        while(k&&!r.empty()){
+59            ans+=r.top();
+60                r.pop();
+61                k--;
+62        }
+63        return ans;
+64    }
+65};
