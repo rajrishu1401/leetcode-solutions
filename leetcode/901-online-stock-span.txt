@@ -1,0 +1,23 @@
+1class StockSpanner {
+2public:
+3    stack<pair<int,int>> s;
+4    StockSpanner() {
+5        
+6    }
+7    
+8    int next(int price) {
+9        int c=1;
+10        while(!s.empty()&&s.top().first<=price){
+11            c+=s.top().second;
+12            s.pop();
+13        }
+14        s.push({price,c});
+15        return c;
+16    }
+17};
+18
+19/**
+20 * Your StockSpanner object will be instantiated and called as such:
+21 * StockSpanner* obj = new StockSpanner();
+22 * int param_1 = obj->next(price);
+23 */
