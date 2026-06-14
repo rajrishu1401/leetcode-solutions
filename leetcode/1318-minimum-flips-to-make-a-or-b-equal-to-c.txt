@@ -1,0 +1,26 @@
+1class Solution {
+2public:
+3    int minFlips(int a, int b, int c) {
+4        int ans=0;
+5        while(c){
+6            if(c&1){
+7                if(!(a&1||b&1)){
+8                    ans++;
+9                }
+10            }else{
+11                if(a&1){
+12                    ans++;
+13                }
+14                if(b&1){
+15                    ans++;
+16                }
+17            }
+18            c=c>>1;
+19            b=b>>1;
+20            a=a>>1;
+21        }
+22        ans+=__builtin_popcount(a);
+23        ans+=__builtin_popcount(b);
+24        return ans;
+25    }
+26};
