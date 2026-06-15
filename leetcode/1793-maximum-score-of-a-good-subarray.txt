@@ -1,0 +1,42 @@
+1class Solution {
+2public:
+3    int maximumScore(vector<int>& nums, int k) {
+4        int l=max(k-1,0);
+5        int r=min(k+1,(int)nums.size()-1);
+6        long long m=nums[k];
+7        long long ans=m;
+8        while(m*nums.size()>ans){
+9            while(l>=0&&m<=nums[l]){
+10                l--;
+11            }
+12            while(r<nums.size()&&m<=nums[r]){
+13                r++;
+14            }
+15            ans=max(ans,m*(r-l-1));
+16            if(l<0||r>=nums.size()){
+17                break;
+18            }
+19            if(nums[l]>nums[r]){
+20                m=nums[l];
+21            }else{
+22                m=nums[r];
+23            }
+24            ans=max(ans,m*(r-l));
+25            
+26        }
+27        
+28        while(m*nums.size()>ans&&l>=0){
+29            m=min(m,(long long)nums[l]);
+30            ans=max(ans,m*((int)nums.size()-l));
+31            l--;
+32        }
+33        
+34        while(m*nums.size()>ans&&r<nums.size()){
+35            m=min(m,(long long)nums[r]);
+36            ans=max(ans,m*(r+1));
+37            r++;
+38        }
+39        
+40        return ans;
+41    }
+42};
