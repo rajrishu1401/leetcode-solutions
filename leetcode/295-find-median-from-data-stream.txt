@@ -1,0 +1,103 @@
+1class MedianFinder {
+2public:
+3    priority_queue<int> l;
+4    priority_queue<int,vector<int>,greater<int>> r;
+5    
+6    int u;
+7    MedianFinder() {
+8        u=INT_MIN;
+9    }
+10    
+11    void addNum(int num) {
+12        if(l.empty()){
+13            if(u==INT_MIN){
+14                u=num;
+15            }else{
+16                if(u>num){
+17                    r.push(u);
+18                    
+19                    l.push(num);
+20                    
+21                }else{
+22                    r.push(num);
+23                    
+24                    l.push(u);
+25                    
+26                }
+27                u=INT_MIN;
+28            }
+29            return;
+30        }
+31        if(l.top()>num){
+32            
+33                
+34                l.push(num);
+35            
+36            if(u==INT_MIN){
+37                u=l.top();
+38                l.pop();
+39                
+40            }else{
+41               
+42                    r.push(u);
+43                
+44                u=INT_MIN;
+45            }
+46        }else if(r.top()<num){
+47            
+48                r.push(num);
+49            
+50            if(u==INT_MIN){
+51                u=r.top();
+52                r.pop();
+53                
+54            }else{
+55              
+56                    l.push(u);
+57                
+58                u=INT_MIN;
+59            }
+60        }else{
+61            if(u==INT_MIN){
+62                u=num;
+63            }else{
+64                if(u>num){
+65                    
+66                        r.push(u);
+67                    
+68                    
+69                        l.push(num);
+70                    
+71                }else{
+72                    
+73                        r.push(num);
+74                    
+75                        l.push(u);
+76                   
+77                }
+78                u=INT_MIN;
+79            }
+80        }
+81    }
+82    
+83    double findMedian() {
+84        //cout<<l.size()<<"  "<<r.size()<<"  ---  "<<u<<endl;
+85        if(u==INT_MIN){
+86            //cout<<l.top()<<"  "<<r.top()<<endl;
+87            double d=l.top();
+88            d+=r.top();
+89            d/=2;
+90            //cout<<d<<endl;
+91            return d;
+92        }
+93        //cout<<u<<endl;
+94        return u;
+95    }
+96};
+97
+98/**
+99 * Your MedianFinder object will be instantiated and called as such:
+100 * MedianFinder* obj = new MedianFinder();
+101 * obj->addNum(num);
+102 * double param_2 = obj->findMedian();
+103 */
