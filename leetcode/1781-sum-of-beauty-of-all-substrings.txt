@@ -1,0 +1,59 @@
+1class Solution {
+2public:
+3    unordered_map<char,int> f;
+4    int beautySum(string s) {
+5        int ans=0;
+6        if(s.size()<3){
+7            return 0;
+8        }
+9        f[s[0]]++;
+10        for(int i=0;(i+2)<s.size();i++){
+11            //cout<<"start:  "<<i<<endl;
+12            if(i&1){
+13                for(int j=s.size()-1;j>(i+1);j--){
+14                    if(f.size()>1){
+15                        ////cout<<ans<<endl;
+16                        ans+=hlp();
+17                        //cout<<ans<<endl;
+18                    }
+19                    f[s[j]]--;
+20                    if(f[s[j]]==0){
+21                        f.erase(s[j]);
+22                    }
+23                }
+24            }else{
+25                f[s[i+1]]++;
+26                for(int j=i+2;j<s.size();j++){
+27                    ////cout<<"here"<<endl;
+28                    f[s[j]]++;
+29                    if(f.size()>1){
+30                        //cout<<ans<<endl;
+31                        ans+=hlp();
+32                        //cout<<ans<<endl;
+33                    }
+34                }
+35            }
+36            f[s[i]]--;
+37            if(f[s[i]]==0){
+38                f.erase(s[i]);
+39            }
+40        }
+41        return ans;
+42    }
+43    int hlp(){
+44        int m=0;
+45        int n=INT_MAX;
+46        //cout<<"fun"<<endl;
+47        for(auto& i:f){
+48            //cout<<i.first<<" : "<<i.second<<endl;
+49            if(i.second>m){
+50                m=i.second;
+51            }
+52            if(i.second<n){
+53                n=i.second;
+54            }
+55        }
+56        //cout<<"end"<<endl;
+57        return m-n;
+58    }
+59};
