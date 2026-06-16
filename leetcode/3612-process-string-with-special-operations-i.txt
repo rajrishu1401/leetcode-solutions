@@ -1,0 +1,18 @@
+1class Solution {
+2public:
+3    string processStr(string s) {
+4        string ans="";
+5        for(char i:s){
+6            if(isalpha(i)){
+7                ans+=i;
+8            }else if(i=='*'&&s!=""){
+9                ans=ans.substr(0,ans.size()-1);
+10            }else if(i=='#'){
+11                ans+=ans;
+12            }else{
+13                reverse(ans.begin(),ans.end());
+14            }
+15        }
+16        return ans;
+17    }
+18};
