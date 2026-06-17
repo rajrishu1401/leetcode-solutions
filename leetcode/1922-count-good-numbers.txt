@@ -1,0 +1,37 @@
+1class Solution {
+2public:
+3    const int mod=1e9+7; 
+4    int countGoodNumbers(long long n) {
+5        long long l=n;
+6        if(l&1)l--;
+7        long long o=hlp(l);
+8        if(n&1){
+9            o*=5;
+10        }
+11        o%=mod;
+12        return o;
+13    }
+14
+15    long long hlp(long long i){
+16        if(i==0){
+17            return 1;
+18        }
+19        if(i==2){
+20            return 20;
+21        }
+22        long long y=i/2;
+23        long long h=y;
+24        if(y&1){
+25            h--;
+26        }
+27        long long u=hlp(h);
+28        u*=u;
+29        u%=mod;
+30        if(y&1){
+31            u*=20;
+32        }
+33        u%=mod;
+34        //cout<<u<<endl;
+35        return u;
+36    }
+37};
