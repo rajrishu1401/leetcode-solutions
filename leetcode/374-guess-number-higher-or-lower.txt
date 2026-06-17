@@ -1,0 +1,28 @@
+1/** 
+2 * Forward declaration of guess API.
+3 * @param  num   your guess
+4 * @return 	     -1 if num is higher than the picked number
+5 *			      1 if num is lower than the picked number
+6 *               otherwise return 0
+7 * int guess(int num);
+8 */
+9
+10class Solution {
+11public:
+12    int guessNumber(int n) {
+13        long long s=1;
+14        long long e=(long long)n+1;
+15        while(s<e){
+16            long long mid=(s+e)/2;
+17            long long u=guess(mid);
+18            if(u==1){
+19                s=mid+1;
+20            }else if(u==-1){
+21                e=mid;
+22            }else{
+23                return mid;
+24            }
+25        }
+26        return -1;
+27    }
+28};
