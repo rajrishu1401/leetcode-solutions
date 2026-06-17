@@ -1,0 +1,29 @@
+1class Solution {
+2public:
+3    vector<vector<int>> ans;
+4    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+5        sort(nums.begin(),nums.end());
+6        vector<int> a;
+7        hlp(nums,0,a);
+8        return ans;
+9    }
+10    void hlp(vector<int>& nums,int i,vector<int>& a){
+11        if(i>=nums.size()){
+12            ans.push_back(a);
+13            return;
+14        }
+15        int u=i;
+16        while(u<nums.size()&&nums[i]==nums[u]){
+17            u++;
+18        }
+19        hlp(nums,u,a);
+20        for(int y=i;y<u;y++){
+21            a.push_back(nums[y]);
+22            hlp(nums,u,a);
+23        }
+24        while(i<u){
+25            a.pop_back();
+26            i++;
+27        }
+28    }
+29};
