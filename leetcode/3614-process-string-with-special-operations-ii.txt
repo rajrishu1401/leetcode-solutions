@@ -1,0 +1,58 @@
+1class Solution {
+2public:
+3    char processStr(string s, long long k) {
+4        long long len=0;
+5        k++;
+6        for(char i:s){
+7            if(i=='*'){
+8                if(len>0)len--;
+9            }else if(i=='#'){
+10                len*=2;
+11            }else if(isalpha(i)){
+12                len++;
+13            }
+14        }
+15        //cout<<len<<endl;
+16        if(k>len){
+17            return '.';
+18        }
+19        for(int i=s.size()-1;i>=0;i--){
+20            if(s[i]=='#'){
+21                len/=2;
+22                if(len<k){
+23                    k-=len;
+24                }
+25            }else if(s[i]=='*'){
+26                len++;
+27            }else if(s[i]=='%'){
+28                long long u=len/2;
+29                if(len&1){
+30                    u++;
+31                    if(k<u){
+32                        k=u-k;
+33                        k=u+k;
+34                    }else{
+35                        k=k-u;
+36                        k=u-k;
+37                    }
+38                }else{
+39                    if(k<=u){
+40                        k=u-k;
+41                        k=u+k+1;
+42                    }else{
+43                        k=k-u-1;
+44                        k=u-k;
+45                    }
+46                }
+47            }else{
+48                if(len==k){
+49                    return s[i];
+50                }else{
+51                    len--;
+52                }
+53            }
+54            //cout<<s[i]<<" "<<len<<" : "<<k<<endl;
+55        }
+56        return '0';
+57    }
+58};
