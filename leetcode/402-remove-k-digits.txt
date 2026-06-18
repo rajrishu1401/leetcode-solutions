@@ -1,0 +1,65 @@
+1class Solution {
+2public:
+3    string removeKdigits(string num, int k) {
+4        stack<pair<char,int>> s;
+5        if(num.size()==k){
+6            return "0";
+7        }
+8        int i=0;
+9        while(k>0&&i<num.size()){
+10            if(s.empty()){
+11                if(num[i]!='0'){
+12                    s.push({num[i],1});
+13                }
+14                i++;
+15            }else if(s.top().first<num[i]){
+16                s.push({num[i],1});
+17                i++;
+18            }else if(s.top().first==num[i]){
+19                s.top().second++;
+20                i++;
+21            }else{
+22                if(k<=s.top().second){
+23                    s.top().second-=k;
+24                    if(s.top().second==0) s.pop();
+25                    k=0;
+26                }else{
+27                    k-=s.top().second;
+28                    s.pop();
+29                }
+30            }
+31        }
+32        while(k>0){
+33            if(k<=s.top().second){
+34                s.top().second-=k;
+35                if(s.top().second==0) s.pop();
+36                k=0;
+37            }else{
+38                k-=s.top().second;
+39                s.pop();
+40            }
+41            if(s.empty()){
+42                return "0";
+43            }
+44        }
+45        string ans="";
+46        while(!s.empty()){
+47            string u="";
+48            u.append(s.top().second,s.top().first);
+49            ans=u+ans;
+50            s.pop();
+51        }
+52        if(ans==""){
+53            while(i<num.size()&&num[i]=='0'){
+54                i++;
+55            }
+56        }
+57        if(i<num.size()){
+58            ans+=num.substr(i,num.size()-i);
+59        }
+60        if(ans==""){
+61            return "0";
+62        }
+63        return ans;
+64    }
+65};
