@@ -1,0 +1,24 @@
+1class Solution {
+2public:
+3    int largestRectangleArea(vector<int>& heights) {
+4        int ans=0;
+5        heights.push_back(0);
+6        stack<pair<int,int>> hl;
+7        for(int i:heights){
+8            if(hl.empty()||i>hl.top().first){
+9                hl.push({i,1});
+10            }else{
+11                int u=0;
+12                while(!hl.empty()&&i<=hl.top().first){
+13                    u+=hl.top().second;
+14                    ans=max(ans,u*hl.top().first);
+15                    hl.pop();
+16                }
+17                u++;
+18                hl.push({i,u});
+19            }
+20            //cout<<ans<<endl;
+21        }    
+22        return ans;
+23    }
+24};
