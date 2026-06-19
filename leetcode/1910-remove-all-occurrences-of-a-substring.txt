@@ -1,0 +1,21 @@
+1class Solution {
+2public:
+3    string removeOccurrences(string s, string part) {
+4        stack<char> st;
+5        string r="";
+6        int j=part.size()-1;
+7        int i=0;
+8        while(i<s.size()){
+9            r+=s[i];
+10            if(s[i]==part[j]&&r.size()>=part.size()){
+11                int u=r.size()-part.size();
+12                if(r.substr(u,part.size())==part){
+13                    r=r.substr(0,u);
+14                }
+15            }
+16            //cout<<r<<endl;
+17            i++;
+18        }
+19        return r;
+20    }
+21};
