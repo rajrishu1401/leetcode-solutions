@@ -1,0 +1,58 @@
+1/**
+2 * Definition for a binary tree node.
+3 * struct TreeNode {
+4 *     int val;
+5 *     TreeNode *left;
+6 *     TreeNode *right;
+7 *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+8 *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+9 *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+10 * };
+11 */
+12class Solution {
+13public:
+14    TreeNode* c;
+15    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+16        c=subRoot;
+17        return isS(root,subRoot);
+18    }
+19
+20    bool isS(TreeNode* root, TreeNode* subroot){
+21        if(root==nullptr){
+22            return false;
+23        }
+24        if(root->val==subroot->val){
+25            if(hlp(root,subroot)){
+26                return true;
+27            }
+28        }
+29        if(isS(root->left,subroot)){
+30            return true;
+31        }
+32        return isS(root->right,subroot);
+33
+34    }
+35    bool hlp(TreeNode* p,TreeNode* q){
+36        if(p->val!=q->val){
+37            return false;
+38        }
+39        bool u=true;
+40        if(p->left!=nullptr&&q->left!=nullptr){
+41            u=hlp(p->left,q->left);
+42        }else if(!(p->left==nullptr&&q->left==nullptr)){
+43            return false;
+44        }
+45        if(!u){
+46            return false;
+47        }
+48        bool v=true;
+49        if(p->right!=nullptr&&q->right!=nullptr){
+50            v=hlp(p->right,q->right);
+51        }else if(!(p->right==nullptr&&q->right==nullptr)){
+52            return false;
+53        }
+54        return v;
+55
+56    }
+57    
+58};
