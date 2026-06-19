@@ -1,0 +1,195 @@
+1class LFUCache {
+2public:
+3    struct frenode;
+4    struct node{
+5        int val;//last
+6        int key;//fst
+7        node* next=nullptr;
+8        node* pre=nullptr;
+9        frenode* parent=nullptr;
+10        node(int v,int k){
+11            val=v;
+12            key=k;
+13        }
+14    };
+15    struct frenode{
+16        node* first=nullptr;
+17        node* last=nullptr;
+18        int count;
+19        frenode* next=nullptr;
+20        frenode* pre=nullptr;
+21        frenode(node* v,node* k,int c){
+22            first=v;
+23            last=k;
+24            count=c;
+25        }
+26    };
+27    frenode* fst=nullptr;
+28    frenode* lst=nullptr;
+29    int c;
+30    int co;
+31    unordered_map<int,node*> m;
+32    LFUCache(int capacity) {
+33        c=capacity;
+34        co=0;
+35    }
+36
+37    void debug(){
+38        frenode* curr1=fst;
+39        while(curr1){
+40            node* incurr=curr1->first;
+41            cout<<"start: "<<curr1->count<<endl;
+42            while(incurr){
+43                cout<<"key: "<<incurr->key<<" v: "<<incurr->val<<" c: "<<curr1->count<<endl;
+44                incurr=incurr->next;
+45            }
+46            cout<<"end"<<endl;
+47            curr1=curr1->next;
+48        }
+49    }
+50    int get(int key) {
+51        //debug();
+52        //cout<<"get : "<<key<<endl;
+53        if(!m.count(key)){
+54            return -1;
+55        }
+56        replace(key,m[key]->val);
+57        //cout<<"get end : "<<key<<endl;
+58        return m[key]->val;
+59        //debug();
+60    }
+61
+62    void replace(int key,int v){
+63        // cout<<"replace start: "<<endl;
+64        // debug();
+65        node* curr=m[key];
+66        curr->val=v;
+67        frenode* Oldparent=curr->parent;
+68        int newcount=Oldparent->count+1;
+69        frenode* nextOld=Oldparent->next;
+70        if(curr->pre&&curr->next){
+71            curr->pre->next=curr->next;
+72            curr->next->pre=curr->pre;
+73        }else if(curr->pre){
+74            curr->pre->next=nullptr;
+75            Oldparent->last=curr->pre;
+76        }else if(curr->next){
+77            curr->next->pre=nullptr;
+78            Oldparent->first=curr->next;
+79        }else{
+80            Oldparent=Oldparent->pre;
+81        }
+82        curr->next=nullptr;
+83        curr->pre=nullptr;
+84        //cout<<" curr removed"<<endl;
+85        //debug();
+86        if(nextOld){
+87            if(nextOld->count==newcount){
+88                curr->next=nextOld->first;
+89                nextOld->first->pre=curr;
+90                curr->pre=nullptr;
+91                nextOld->first=curr;
+92                curr->parent=nextOld;
+93                if(Oldparent){
+94                    Oldparent->next=nextOld;
+95                }else{
+96                    fst=nextOld;
+97                }
+98            }else{
+99                frenode* p=new frenode(curr,curr,newcount);
+100                p->next=nextOld;
+101                p->pre=Oldparent;
+102                nextOld->pre=p;
+103                if(Oldparent){
+104                    Oldparent->next=p;
+105                }else{
+106                    fst=p;
+107                }
+108                curr->parent=p;
+109            }
+110        }else if(Oldparent){
+111            //cout<<"hereeeeeeeeeeeeeeeeeeeeeeeeeeee"<<endl;
+112            frenode* p=new frenode(curr,curr,newcount);
+113            p->next=nullptr;
+114            p->pre=Oldparent;
+115            Oldparent->next=p;
+116            lst=p;
+117            curr->parent=p;
+118        }else{
+119            frenode* p=new frenode(curr,curr,newcount);
+120            p->next=nullptr;
+121            p->pre=nullptr;
+122            fst=p;
+123            lst=p;
+124            curr->parent=p;
+125        }
+126        //cout<<"replace end"<<endl;
+127        //debug();
+128        
+129    }
+130    void insert(int key, int value){
+131        // cout<<"insert start"<<endl;
+132        // debug();
+133        if(c==co){
+134            node* curr=fst->last;
+135            if(curr->pre){
+136                curr->pre->next=nullptr;
+137                fst->last=curr->pre;
+138            }else{
+139                fst=fst->next;
+140                if(fst)fst->pre=nullptr;
+141            }
+142            m.erase(curr->key);
+143        }else{
+144            co++;
+145        }
+146        // cout<<"removed exccess"<<endl;
+147        // debug();
+148        
+149        node* newNode=new node(value,key);
+150        m[key]=newNode;
+151        if(fst&&fst->count==1){
+152            newNode->next=fst->first;
+153            fst->first->pre=newNode;
+154            newNode->pre=nullptr;
+155            fst->first=newNode;
+156            newNode->parent=fst;
+157        }else{
+158            if(fst){
+159                frenode* p=new frenode(newNode,newNode,1);
+160                p->next=fst;
+161                p->pre=nullptr;
+162                fst->pre=p;
+163                fst=p;
+164                newNode->parent=fst;
+165            }else{
+166                frenode* p=new frenode(newNode,newNode,1);
+167                p->next=nullptr;
+168                p->pre=nullptr;
+169                fst=p;
+170                lst=p;
+171                newNode->parent=fst;
+172            }
+173            
+174            
+175        }
+176        // cout<<"insert end"<<endl;
+177        //     debug();
+178    }
+179    void put(int key, int value) {
+180        //cout<<"put : "<<key<<endl;
+181        if(m.count(key)){
+182            replace(key,value);
+183        }else{
+184            insert(key,value);
+185        }
+186        //cout<<"put end : "<<key<<endl;
+187    }
+188};
+189
+190/**
+191 * Your LFUCache object will be instantiated and called as such:
+192 * LFUCache* obj = new LFUCache(capacity);
+193 * int param_1 = obj->get(key);
+194 * obj->put(key,value);
+195 */
