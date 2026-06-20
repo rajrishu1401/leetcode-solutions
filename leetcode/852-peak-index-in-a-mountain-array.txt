@@ -1,0 +1,16 @@
+1class Solution {
+2public:
+3    int peakIndexInMountainArray(vector<int>& arr) {
+4        int s=0;
+5        int e=arr.size();
+6        while(s<e){
+7            int mid=(s+e)/2;
+8            if(arr[mid]>arr[mid-1]){
+9                s=mid+1;
+10            }else{
+11                e=mid;
+12            }
+13        }
+14        return s-1;
+15    }
+16};
