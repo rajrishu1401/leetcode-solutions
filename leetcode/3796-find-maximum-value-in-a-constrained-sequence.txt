@@ -1,0 +1,42 @@
+1class Solution {
+2public:
+3    int findMaxVal(int n, vector<vector<int>>& restrictions, vector<int>& diff) {
+4        sort(restrictions.begin(),restrictions.end());
+5        vector<int> d(n,INT_MAX);
+6        int o=0;
+7        int ans=0;
+8        d[0]=0;
+9        for(int i=1;i<n;i++){
+10            int a=d[i-1]+diff[i-1];
+11            if(o<restrictions.size()&&restrictions[o][0]==i){
+12                a=min(restrictions[o][1],a);
+13                o++;
+14            }
+15            d[i]=a;
+16        }
+17        // for(int i:d){
+18        //     cout<<i<<" ";
+19        // }
+20        // cout<<endl;
+21        o=restrictions.size()-1;
+22        for(int i=n-1;i>=restrictions[o][0];i--){
+23            ans=max(ans,d[i]);
+24        }
+25        
+26        int l=restrictions[o][0]-1;
+27        o--;
+28        for(int i=l;i>=0;i--){
+29            int a=d[i+1]+diff[i];
+30            if(o>=0&&restrictions[o][0]==i){
+31                a=min(restrictions[o][1],a);
+32                o--;
+33            }
+34            d[i]=min(a,d[i]);
+35            ans=max(ans,d[i]);
+36        }
+37        // for(int i:d){
+38        //     cout<<i<<" ";
+39        // }
+40        return ans;
+41    }
+42};
