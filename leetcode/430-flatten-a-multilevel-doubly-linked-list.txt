@@ -1,0 +1,18 @@
+                    lst->next=head->next;                    lst->next=head->next;
+                    head->next->prev=lst;                    head->next->prev=lst;
+                }else{                }else{
+                    lsthere=getlst(head->child);                    lsthere=getlst(head->child);
+                }                }
+                head->next=head->child;                head->next=head->child;
+                head->child=nullptr;                head->child=nullptr;
+                head->next->prev=head;                head->next->prev=head;
+            }            }
+                        
+            head=head->next;            head=head->next;
+        }        }
+                    Node* lst=getlst(head->child);                    Node* lst=getlst(head->child);
+            if(head->child){            if(head->child){
+                if(head->next){                if(head->next){
+        return lsthere;        return lsthere;
+    }    }
+};};
