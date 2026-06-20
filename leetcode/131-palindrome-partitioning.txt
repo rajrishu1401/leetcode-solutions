@@ -1,0 +1,56 @@
+1class Solution {
+2public:
+3    vector<vector<int>> dp;
+4    vector<vector<string>> ans;
+5    vector<vector<string>> partition(string s) {
+6        dp.resize(s.size(),vector<int>(s.size()));
+7        vector<string> a;
+8        hlp(s,0,a);
+9        return ans;
+10    }
+11    void hlp(string& s,int i,vector<string>& a){
+12        if(i>=s.size()){
+13            ans.push_back(a);
+14            return;
+15        }
+16        string g="";
+17        g+=s[i];
+18        a.push_back(g);
+19        hlp(s,i+1,a);
+20        a.pop_back();
+21        for(int u=i+1;u<s.size();u++){
+22            g+=s[u];
+23            if(isPal(s,i,u)){
+24                //cout<<"entered"<<endl;
+25                a.push_back(g);
+26                hlp(s,u+1,a);
+27                a.pop_back();
+28                
+29            }
+30        }
+31    }
+32    bool isPal(string& s,int i,int j){
+33        //cout<<s.substr(i,j-i+1)<<endl;
+34        int u=i;
+35        int v=j;
+36        while(i<j){
+37            if(dp[i][j]!=0){
+38                if(dp[i][j]==1){
+39                    dp[u][v]=1;
+40                    return true;
+41                }
+42                dp[u][v]=-1;
+43                return false;
+44            }
+45            if(s[i]!=s[j]){
+46                dp[u][v]=-1;
+47                return false;
+48            }
+49            i++;
+50            j--;
+51        }
+52        dp[u][v]=1;
+53        return true;
+54    }
+55    
+56};
