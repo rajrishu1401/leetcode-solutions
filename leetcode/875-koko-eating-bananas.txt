@@ -1,0 +1,66 @@
+1class Solution {
+2public:
+3    int minEatingSpeed(vector<int>& piles, int h) {
+4        sort(piles.begin(),piles.end());
+5        int n=piles.size();
+6        long long su=0;
+7        if(h==n){
+8            return piles[n-1];
+9        }
+10        for(int i:piles){
+11            su+=i;
+12        }
+13        int lu=su/h;
+14        //cout<<lu<<endl;
+15        int minans=piles[n-1];
+16        int startans=lu;
+17        int endans=(piles[n-1]/(h/n))+2;
+18        while(startans<endans){
+19            int midans=(startans+endans)/2;
+20            int got=hlp(piles,midans);
+21            if(got>h){
+22                startans=midans+1;
+23            }else{
+24                minans=min(minans,midans);
+25                endans=midans;
+26            }
+27        }
+28        return minans;
+29    }
+30    int hlp(vector<int>& piles,int ans){
+31        cout<<ans<<endl;
+32        if(ans==0){
+33            return INT_MAX;
+34        }
+35        int adans=getfre(piles,ans);
+36        //cout<<adans<<endl;
+37        int count=adans;
+38        
+39        int i=count<piles.size()?ceil((double)piles[count]/(double)ans):0;
+40        while(count<piles.size()){
+41            int u=getfre(piles,ans*i);
+42            //cout<<u<<" k "<<(ans*i)<<endl;
+43            int w=u<piles.size()?ceil((double)piles[u]/(double)ans):0;
+44            u-=count;
+45            count+=u;
+46            adans+=(u*i);
+47            //cout<<adans<<" "<<count<<endl;
+48            i=w;
+49        }
+50        return adans;
+51    }
+52    int getfre(vector<int>& piles,int target){
+53        int start=0;
+54        int end=piles.size();
+55        while(start<end){
+56            int mid=(start+end)/2;
+57            if(piles[mid]<=target){
+58                start=mid+1;
+59            }else{
+60                end=mid;
+61            }
+62
+63        }
+64        return start;
+65    }
+66};
