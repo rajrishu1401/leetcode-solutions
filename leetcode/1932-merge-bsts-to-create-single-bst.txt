@@ -1,0 +1,90 @@
+1/**
+2 * Definition for a binary tree node.
+3 * struct TreeNode {
+4 *     int val;
+5 *     TreeNode *left;
+6 *     TreeNode *right;
+7 *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+8 *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+9 *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+10 * };
+11 */
+12class Solution {
+13public:
+14    unordered_set<int> m;
+15    unordered_map<int,pair<TreeNode*,pair<int,int>>> h;
+16    TreeNode* canMerge(vector<TreeNode*>& trees) {
+17        for(TreeNode* i:trees){
+18            //cout<<i->val<<endl;
+19            if(hlp(i)){
+20                return nullptr;
+21            }
+22        }
+23        TreeNode* top=nullptr;
+24        for(int i=0;i<trees.size();i++){
+25            //cout<<trees[i]->val<<endl;
+26            if(!m.count(trees[i]->val)){
+27                //cout<<"heare"<<endl;
+28                if(top){
+29                    return {};
+30                }
+31                top=trees[i];
+32            }
+33        }
+34        if(!top){
+35            return {};
+36        }
+37        if(tr(top)){
+38            return {};
+39        }
+40        if(h.size()>1){
+41            return {};
+42        }
+43        return top;
+44        
+45    }
+46    bool tr(TreeNode* par){
+47        if(par->left&&h.count(par->left->val)){
+48            if(tr(h[par->left->val].first)){
+49                return true;
+50            }
+51            if(h[par->left->val].second.second>=par->val){
+52                return true;
+53            }
+54            par->left=h[par->left->val].first;
+55            h[par->val].second.first=h[par->left->val].second.first;
+56            h.erase(par->left->val);
+57        }
+58        if(par->right&&h.count(par->right->val)){
+59            if(tr(h[par->right->val].first)){
+60                return true;
+61            }
+62            if(h[par->right->val].second.first<=par->val){
+63                return true;
+64            }
+65            par->right=h[par->right->val].first;
+66            h[par->val].second.second=h[par->right->val].second.second;
+67            h.erase(par->right->val);
+68        }
+69        return false;
+70
+71    }
+72    bool hlp(TreeNode* curr){
+73        h[curr->val]={curr,{curr->val,curr->val}};
+74        if(curr->left){
+75            if(m.count(curr->left->val)){
+76                return true;
+77            }
+78            m.insert(curr->left->val);
+79            h[curr->val].second.first=curr->left->val;
+80        }
+81        if(curr->right){
+82            if(m.count(curr->right->val)){
+83                return true;
+84            }
+85            m.insert(curr->right->val);
+86            h[curr->val].second.second=curr->right->val;
+87        }
+88        return false;
+89    }
+90};
