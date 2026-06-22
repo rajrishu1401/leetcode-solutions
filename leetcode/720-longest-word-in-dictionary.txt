@@ -1,0 +1,45 @@
+1class Solution {
+2public:
+3    struct trie{
+4        trie* ch[26]={nullptr};
+5        bool isEnd=false;
+6    };
+7    trie* start;
+8    string ans="";
+9    void insert(string s){
+10        trie* curr=start;
+11        bool p=true;
+12        int i=0;
+13        for(;i<(s.size()-1);i++){
+14            if(curr->ch[s[i]-'a']==nullptr){
+15                curr->ch[s[i]-'a']=new trie();
+16            }
+17            curr=curr->ch[s[i]-'a'];
+18            if(!curr->isEnd){
+19                p=false;
+20            }
+21        }
+22        if(curr->ch[s[i]-'a']==nullptr){
+23            curr->ch[s[i]-'a']=new trie();
+24        }
+25        curr=curr->ch[s[i]-'a'];
+26        curr->isEnd=true;
+27        if(p){
+28            ans=s;
+29        }
+30    }
+31    string longestWord(vector<string>& words) {
+32        start=new trie();
+33        sort(words.begin(),words.end(),[](string& a, string& b){
+34            if(a.size()==b.size()){
+35                return a>b;
+36            }
+37            return a.size()<b.size();
+38        });
+39        for(string i:words){
+40            //cout<<i<<endl;
+41            insert(i);
+42        }
+43        return ans;
+44    }
+45};
