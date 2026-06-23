@@ -1,0 +1,34 @@
+1class Solution {
+2public:
+3    int mod=1e9+7;
+4    int n;
+5    int k;
+6    int numRollsToTarget(int nu, int ku, int target) {
+7        if(target<nu||(nu*ku)<target){
+8            return 0;
+9        }
+10        vector<vector<int>> dp(nu,vector<int>(target+1,-1));
+11        n=nu;
+12        k=ku;
+13        return hlp(0,target,dp);
+14    }
+15    int hlp(int i,int tar,vector<vector<int>>& dp){
+16        if(i>=n){
+17            if(tar==0){
+18                return 1;
+19            }
+20            return 0;
+21        }
+22        if(dp[i][tar]!=-1){
+23            return dp[i][tar];
+24        }
+25        long long u=0;
+26        int y=min(tar,k);
+27        for(int j=1;j<=y;j++){
+28            u+=hlp(i+1,tar-j,dp);
+29            u%=mod;
+30        }
+31        dp[i][tar]=u;
+32        return u;
+33    }
+34};
