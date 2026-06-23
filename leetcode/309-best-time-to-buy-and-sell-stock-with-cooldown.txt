@@ -1,0 +1,26 @@
+1class Solution {
+2public:
+3    int maxProfit(vector<int>& prices) {
+4        vector<vector<int>> dp(prices.size(),vector<int>(2,-1));
+5        return hlp(prices,dp,0,0);
+6
+7    }
+8    int hlp(vector<int>& prices,vector<vector<int>>& dp,int i,int j){
+9        if(i>=dp.size()){
+10            return 0;
+11        }
+12        if(dp[i][j]!=-1){
+13            return dp[i][j];
+14        }
+15        int s=0;
+16        if(j==1){
+17            s=hlp(prices,dp,i+1,1);
+18            s=max(s,hlp(prices,dp,i+2,0)+prices[i]);
+19        }else{
+20            s=hlp(prices,dp,i+1,1)-prices[i];
+21            s=max(s,hlp(prices,dp,i+1,0));
+22        }
+23        dp[i][j]=s;
+24        return s;
+25    }
+26};
