@@ -1,0 +1,28 @@
+1class Solution {
+2public:
+3    int numDecodings(string s) {
+4        vector<int> dp(s.size());
+5        return hlp(s,0,dp);
+6    }
+7
+8    int hlp(string& s,int i,vector<int>& dp){
+9        if(i>=s.size()){
+10            return 1;
+11        }
+12        if(dp[i]){
+13            return dp[i];
+14        }
+15        if(s[i]=='0'){
+16            return 0;
+17        }
+18        int j=hlp(s,i+1,dp);
+19        int h=0;
+20        if((i+1)<s.size()&&s[i]<'3'){
+21            if(s[i]!='2'||s[i+1]<'7'){
+22                h=hlp(s,i+2,dp);
+23            }
+24        }
+25        dp[i]=h+j;
+26        return dp[i];
+27    }
+28};
