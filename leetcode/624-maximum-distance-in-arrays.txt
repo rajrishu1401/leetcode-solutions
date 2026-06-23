@@ -1,0 +1,38 @@
+1class Solution {
+2public:
+3    int maxDistance(vector<vector<int>>& arrays) {
+4        pair<int,int> l1={INT_MAX,-1};
+5        pair<int,int> l2={INT_MAX,-1};
+6        pair<int,int> g1={INT_MIN,-1};
+7        pair<int,int> g2={INT_MIN,-1};
+8        for(int i=0;i<arrays.size();i++){
+9            // l1=min(l1,arrays[i][0]);
+10            // g1=max(g1,arrays[i][arrays[i].size()-1]);
+11            if(l1.first>=arrays[i][0]){
+12                l2=l1;
+13                l1={arrays[i][0],i};
+14            }else if(l2.first>arrays[i][0]){
+15                l2={arrays[i][0],i};
+16            }
+17            if(g1.first<=arrays[i][arrays[i].size()-1]){
+18                g2=g1;
+19                g1={arrays[i][arrays[i].size()-1],i};
+20            }else if(g2.first<=arrays[i][arrays[i].size()-1]){
+21                g2={arrays[i][arrays[i].size()-1],i};
+22            }
+23        }
+24        //cout<<g1.first<<"  "<<g2.first<<" , "<<l1.first<<"  "<<l2.first<<endl;
+25        int ans=abs(g1.first-l1.first);
+26        if(g1.second==l1.second){
+27            int u=0;
+28            if(g1.second!=l2.second){
+29                u=abs(g1.first-l2.first);
+30            }
+31            if(g2.second!=l1.second){
+32                u=max(u,abs(g2.first-l1.first));
+33            }
+34            ans=u;
+35        }
+36        return ans;
+37    }
+38};
