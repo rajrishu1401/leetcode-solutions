@@ -1,0 +1,33 @@
+1class Solution {
+2public:
+3    int minOperations(vector<int>& nums) {
+4        int ans=0;
+5        int u=0;
+6        for(int i=0;i<nums.size();i++){
+7            if(nums[i]&1){
+8                ans++;
+9                nums[i]--;
+10            }
+11            if(nums[i]==0){
+12                u++;
+13            }
+14        }
+15        //cout<<ans<<" "<<u<<endl;
+16        while(u<nums.size()){
+17            for(int i=0;i<nums.size();i++){
+18                if(nums[i]==0) continue;
+19                nums[i]/=2;
+20                if(nums[i]&1){
+21                    ans++;
+22                    nums[i]--;
+23                }
+24                if(nums[i]==0){
+25                    u++;
+26                }
+27            }
+28            //cout<<ans<<" "<<u<<endl;
+29            ans++;
+30        }
+31        return ans;
+32    }
+33};
