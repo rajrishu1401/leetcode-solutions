@@ -1,0 +1,37 @@
+1class Solution {
+2public:
+3    long long countCommas(long long n) {
+4        long long j=n;
+5        int h=0;
+6        while(j){
+7            j/=10;
+8            h++;
+9        }
+10        if(h<4){
+11            return 0;
+12        }
+13        //cout<<h<<endl;
+14        int cc=1;
+15        long long ans=0;
+16        int u=6;
+17        while(u<h){
+18            long long g=pow(10,u);
+19            g-=pow(10,u-3);
+20            ans+=g*cc;
+21            u+=3;
+22            cc++;
+23            //<<"while: "<<ans<<endl;
+24        }
+25        u-=3;
+26        if(u<(h-1)){
+27            long long g=pow(10,h-1);
+28            g-=pow(10,u);
+29            //g+=1;
+30            ans+=g*cc;
+31            //cout<<"if: "<<ans<<endl;
+32        }
+33        ans+=(cc*(n-pow(10,h-1)+1));
+34        //cout<<"end: "<<ans<<endl;
+35        return ans;
+36    }
+37};
