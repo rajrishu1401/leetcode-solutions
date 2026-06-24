@@ -1,0 +1,13 @@
+1class Solution {
+2public:
+3    int maxDistinct(string s) {
+4        unordered_set<char> c;
+5        for(char i:s){
+6            c.insert(i);
+7            if(c.size()==26){
+8                return 26;
+9            }
+10        }
+11        return c.size();
+12    }
+13};
