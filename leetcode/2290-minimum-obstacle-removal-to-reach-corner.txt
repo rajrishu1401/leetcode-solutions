@@ -1,0 +1,52 @@
+1class Solution {
+2public:
+3    int minimumObstacles(vector<vector<int>>& grid) {
+4        vector<vector<bool>> v(grid.size(),vector<bool>(grid[0].size()));
+5        priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>> q;
+6        q.push({0,0,0});
+7        v[0][0]=true;
+8        int ans=0;
+9        while(!q.empty()){
+10            vector<int> u=q.top();
+11            //cout<<u[1]<<" , "<<u[2]<<" -> "<<u[0]<<endl;
+12            if(u[1]==grid.size()-1&&u[2]==grid[0].size()-1){
+13                return u[0];
+14            }
+15            q.pop();
+16            if(u[1]>0&&!v[u[1]-1][u[2]]){
+17                v[u[1]-1][u[2]]=true;
+18                if(grid[u[1]-1][u[2]]!=1){
+19                    q.push({u[0],u[1]-1,u[2]});
+20                }else{
+21                    q.push({u[0]+1,u[1]-1,u[2]});
+22                }
+23            }
+24            if(u[1]<(grid.size()-1)&&!v[u[1]+1][u[2]]){
+25                v[u[1]+1][u[2]]=true;
+26                if(grid[u[1]+1][u[2]]!=1){
+27                    q.push({u[0],u[1]+1,u[2]});
+28                }else{
+29                    q.push({u[0]+1,u[1]+1,u[2]});
+30                }
+31            }
+32            if(u[2]>0&&!v[u[1]][u[2]-1]){
+33                v[u[1]][u[2]-1]=true;
+34                if(grid[u[1]][u[2]-1]!=1){
+35                    q.push({u[0],u[1],u[2]-1});
+36                }else{
+37                    q.push({u[0]+1,u[1],u[2]-1});
+38                }
+39            }
+40            if(u[2]<(grid[0].size()-1)&&!v[u[1]][u[2]+1]){
+41                v[u[1]][u[2]+1]=true; 
+42                if(grid[u[1]][u[2]+1]!=1){
+43                    q.push({u[0],u[1],u[2]+1});
+44                }else{
+45                    q.push({u[0]+1,u[1],u[2]+1});
+46                }
+47            }
+48
+49        }
+50        return -1;
+51    }
+52};
