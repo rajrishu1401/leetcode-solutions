@@ -1,0 +1,44 @@
+1class Solution {
+2public:
+3    int numberOfSubstrings(string s) {
+4        unordered_map<char,int> m;
+5        int i=0;
+6        int j=0;
+7        int ans=0;
+8        while(i<s.size()){
+9            //cout<<m.size()<<endl;
+10            if(m.size()<3){
+11                //cout<<" reason if: ";
+12                m[s[i]]++;
+13                if(m.size()==3){
+14                    ans+=(s.size()-i);
+15                    m[s[j]]--;
+16                    if(m[s[j]]==0){
+17                        m.erase(s[j]);
+18                    }
+19                    j++;
+20                }
+21                i++;
+22                
+23            }else{
+24                //cout<<" reason else: ";
+25                ans+=(s.size()-i+1);
+26                m[s[j]]--;
+27                if(m[s[j]]==0){
+28                    m.erase(s[j]);
+29                }
+30                j++;
+31            }
+32            //cout<<j<<" , "<<i<<" : "<<ans<<endl;
+33        }
+34        while(m.size()==3){
+35            ans++;
+36            m[s[j]]--;
+37            if(m[s[j]]==0){
+38                m.erase(s[j]);
+39            }
+40            j++;
+41        }
+42        return ans;
+43    }
+44};
