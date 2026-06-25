@@ -1,0 +1,60 @@
+1class Solution {
+2public:
+3    int shortestPath(vector<vector<int>>& grid, int k) {
+4        vector<vector<vector<bool>>> v(grid.size(),vector<vector<bool>>(grid[0].size(),vector<bool>(k+1)));
+5        queue<vector<int>> q;
+6        q.push({0,0,k});
+7        int ans=0;
+8        v[0][0][k]=true;
+9        while(!q.empty()){
+10            queue<vector<int>> p;
+11            while(!q.empty()){
+12                vector<int> u=q.front();
+13                if(u[0]==grid.size()-1&&u[1]==grid[0].size()-1){
+14                    return ans;
+15                }
+16                q.pop();
+17                if(u[0]>0){
+18                    if(grid[u[0]-1][u[1]]!=1&&!v[u[0]-1][u[1]][u[2]]){
+19                        v[u[0]-1][u[1]][u[2]]=true;
+20                        p.push({u[0]-1,u[1],u[2]});
+21                    }else if(u[2]&&!v[u[0]-1][u[1]][u[2]-1]){
+22                        v[u[0]-1][u[1]][u[2]-1]=true;
+23                        p.push({u[0]-1,u[1],u[2]-1});
+24                    }
+25                }
+26                if(u[0]<(grid.size()-1)){
+27                    if(grid[u[0]+1][u[1]]!=1&&!v[u[0]+1][u[1]][u[2]]){
+28                        v[u[0]+1][u[1]][u[2]]=true;
+29                        p.push({u[0]+1,u[1],u[2]});
+30                    }else if(u[2]&&!v[u[0]+1][u[1]][u[2]-1]){
+31                        v[u[0]+1][u[1]][u[2]-1]=true;
+32                        p.push({u[0]+1,u[1],u[2]-1});
+33                    }
+34                }
+35                if(u[1]>0){
+36                    if(grid[u[0]][u[1]-1]!=1&&!v[u[0]][u[1]-1][u[2]]){
+37                        v[u[0]][u[1]-1][u[2]]=true;
+38                        p.push({u[0],u[1]-1,u[2]});
+39                    }else if(u[2]&&!v[u[0]][u[1]-1][u[2]]){
+40                        v[u[0]][u[1]-1][u[2]-1]=true;
+41                        p.push({u[0],u[1]-1,u[2]-1});
+42                    }
+43                }
+44                if(u[1]<(grid[0].size()-1)){ 
+45                    if(grid[u[0]][u[1]+1]!=1&&!v[u[0]][u[1]+1][u[2]]){
+46                        v[u[0]][u[1]+1][u[2]]=true;
+47                        p.push({u[0],u[1]+1,u[2]});
+48                    }else if(u[2]&&!v[u[0]][u[1]+1][u[2]-1]){
+49                        v[u[0]][u[1]+1][u[2]-1]=true;
+50                        p.push({u[0],u[1]+1,u[2]-1});
+51                    }
+52                }
+53                
+54            }
+55            ans++;
+56            q=move(p);
+57        }
+58        return -1;
+59    }
+60};
