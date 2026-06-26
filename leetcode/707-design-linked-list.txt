@@ -1,0 +1,127 @@
+1class MyLinkedList {
+2public:
+3    struct dobly{
+4        dobly* next;
+5        dobly* pre;
+6        int val;
+7        dobly(int v){
+8            val=v;
+9        }
+10    };
+11    dobly* head;
+12    dobly* tail;
+13    int c=0;
+14    MyLinkedList() {
+15        
+16    }
+17    
+18    int get(int index) {
+19        if(c==0){
+20            return -1;
+21        }
+22        if(index<=0){
+23            return head->val;
+24        }
+25        if(index>=c){
+26            return -1;
+27        }
+28        dobly* curr=head;
+29        while(index){
+30            curr=curr->next;
+31            index--;
+32        }
+33        return curr->val;
+34    }
+35    
+36    void addAtHead(int val) {
+37        if(c==0){
+38            head=new dobly(val);
+39            tail=head;
+40            c++;
+41            return;
+42        }
+43        head->pre=new dobly(val);
+44        head->pre->next=head;
+45        head=head->pre;
+46        c++;
+47    }
+48    
+49    void addAtTail(int val) {
+50        if(c==0){
+51            head=new dobly(val);
+52            tail=head;
+53            c++;
+54            return;
+55        }
+56        tail->next=new dobly(val);
+57        tail->next->pre=tail;
+58        tail=tail->next;
+59        c++;
+60    }
+61    
+62    void addAtIndex(int index, int val) {
+63        if(index>c){
+64            return;
+65        }
+66        if(index<=0){
+67            addAtHead(val);
+68            return;
+69        }
+70        if(index==c){
+71            addAtTail(val);
+72            return;
+73        }
+74        dobly* curr=head;
+75        while(index){
+76            curr=curr->next;
+77            index--;
+78        }
+79        dobly* ne=new dobly(val);
+80        curr->pre->next=ne;
+81        ne->pre=curr->pre;
+82        ne->next=curr;
+83        curr->pre=ne;
+84        c++;
+85    }
+86    void deleteAtIndex(int index) {
+87        if(index<0||index>=c){
+88            return;
+89        }
+90        if(c==1){
+91            c--;
+92            head==nullptr;
+93            tail==head;
+94            return;
+95        }
+96        if(index==0){
+97            head=head->next;
+98            head->pre=nullptr;
+99            c--;
+100            return;
+101        }
+102        if(index==(c-1)){
+103            tail=tail->pre;
+104            tail->next=nullptr;
+105            c--;
+106            return;
+107        }
+108        dobly* curr=head;
+109        while(index){
+110            curr=curr->next;
+111            index--;
+112        }
+113        curr->next->pre=curr->pre;
+114        curr->pre->next=curr->next;
+115        c--;
+116    }
+117};
+118
+119/**
+120 * Your MyLinkedList object will be instantiated and called as such:
+121 * MyLinkedList* obj = new MyLinkedList();
+122 * int param_1 = obj->get(index);
+123 * obj->addAtHead(val);
+124 * obj->addAtTail(val);
+125 * obj->addAtIndex(index,val);
+126 * obj->deleteAtIndex(index);
+127 */
