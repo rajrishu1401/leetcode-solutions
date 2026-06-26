@@ -1,0 +1,25 @@
+1class Solution {
+2public:
+3    int minimumLengthEncoding(vector<string>& words) {
+4        unordered_set<string> m;
+5        for(int i=0;i<words.size();i++){
+6            m.insert(words[i]);
+7        }
+8        for(int i=0;i<words.size();i++){
+9            if(!m.count(words[i])) continue;
+10            for(int j=1;j<words[i].size();j++){
+11                string u=words[i].substr(j,words[i].size()-j);
+12                //cout<<u<<endl;
+13                if(m.count(u)){
+14                    m.erase(u);
+15                }
+16            }
+17        }
+18        int ans=0;
+19        for(string t:m){
+20            ans+=t.size();
+21            ans++;
+22        }
+23        return ans;
+24    }
+25};
