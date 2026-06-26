@@ -1,0 +1,61 @@
+1class Solution {
+2public:
+3    string validIPAddress(string queryIP) {
+4        if(queryIP.size()<7||queryIP.back()==':'||queryIP.back()=='.'){
+5            return "Neither";
+6        }
+7        if(queryIP.size()>15||queryIP[1]==':'){
+8            stringstream ss(queryIP);
+9            string y;
+10            int u=0;
+11            while(getline(ss,y,':')){
+12                //cout<<y<<endl;
+13                u++;
+14                if(u==9){
+15                    return "Neither";
+16                }
+17                if(y.size()<1||y.size()>4){
+18                    return "Neither";
+19                }
+20                for(char j:y){
+21                    if(!isdigit(j)){
+22                        if(j>'f'||j<'A'||(j>'F'&&j<'a')){
+23                            return "Neither";
+24                        }
+25                    }
+26                }
+27            }
+28            if(u!=8){
+29                return "Neither";
+30            }
+31            return "IPv6";
+32        }
+33        stringstream ss(queryIP);
+34        string y;
+35        int u=0;
+36        while(getline(ss,y,'.')){
+37            u++;
+38            if(u==5){
+39                return "Neither";
+40            }
+41            if(y.size()<1||y.size()>3){
+42                return "Neither";
+43            }
+44            if(y.size()!=1&&y[0]=='0'){
+45                return "Neither";
+46            }
+47            for(char j:y){
+48                if(!isdigit(j)){
+49                    return "Neither";
+50                }
+51            }
+52            int g=stoi(y);
+53            if(g>255||g<0){
+54                return "Neither";
+55            }
+56            
+57        }
+58        if(u!=4) return "Neither";
+59        return "IPv4";
+60    }
+61};
