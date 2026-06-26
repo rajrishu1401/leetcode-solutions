@@ -1,0 +1,42 @@
+1class Solution {
+2public:
+3    int characterReplacement(string s, int k) {
+4        int j=0;
+5        char u=s[0];
+6        int i=0;
+7        unordered_map<char,int> m;
+8        m[u]++;
+9        int mx=1;
+10        int ans=0;
+11        while(i<(s.size()-1)){
+12            int y=(i-j+1)-mx;
+13            if(y<=k){
+14                ans=max(ans,i-j+1);
+15                i++;
+16                m[s[i]]++;
+17                if(m[s[i]]>=mx){
+18                    mx=m[s[i]];
+19                    u=s[i];
+20                }
+21                
+22            }else{
+23                m[s[j]]--;
+24                if(s[j]==u){
+25                    mx=0;
+26                    for(auto t:m){
+27                        if(t.second>=mx){
+28                            mx=t.second;
+29                            u=t.first;
+30                        }
+31                    }
+32                }
+33                j++;
+34            }
+35        }
+36        int y=(i-j+1)-mx;
+37        if(y<=k){
+38            ans=max(ans,i-j+1);
+39        }
+40        return ans;
+41    }
+42};
