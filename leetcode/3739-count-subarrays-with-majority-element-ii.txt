@@ -1,0 +1,32 @@
+1class Solution {
+2public:
+3    long long countMajoritySubarrays(vector<int>& nums, int target) {
+4        unordered_map<int,int> m;
+5        m[0]=1;
+6        long long ans=0;
+7        long long c=1;
+8        int pre=0;
+9        m[0]=1;
+10        for(int i=1;i<=nums.size();i++){
+11            if(nums[i-1]!=target){
+12                c-=m[pre];
+13                pre--;
+14                c-=m[pre];
+15                ans+=c;
+16                m[pre]++;
+17                c+=m[pre];
+18            }else{
+19                ans+=c;
+20                pre++;
+21                m[pre]++;
+22                c+=m[pre];
+23            }
+24            // cout<<i<<" -> "<<pre<<endl;
+25            // for(auto t:m){
+26            //     cout<<t.first<<" : "<<t.second<<endl;
+27            // }
+28            // cout<<"ans: "<<ans<<endl;
+29        }
+30        return ans;
+31    }
+32};
