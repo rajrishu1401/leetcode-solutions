@@ -1,0 +1,11 @@
+if(num == value) ++ans;
+        
+        else if(ans > 0 && num != value) --ans;
+        
+        if(ans == k)
+        {
+            --ans;
+            return true;
+        }
+        
+        return false;
