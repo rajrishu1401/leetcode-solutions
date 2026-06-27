@@ -1,0 +1,28 @@
+1class Solution {
+2public:
+3    int garbageCollection(vector<string>& garbage, vector<int>& travel) {
+4        int ans=0;
+5        unordered_set<char> s;
+6        for(int i=garbage.size()-1;i>0;i--){
+7            if(s.size()<3){
+8                for(char c:garbage[i]){
+9                    s.insert(c);
+10                    if(s.size()==3){
+11                        break;
+12                    }
+13                }
+14            }
+15            ans+=(garbage[i].size()+(s.size()*travel[i-1]));
+16        }
+17        if(s.size()<3){
+18            for(char c:garbage[0]){
+19                s.insert(c);
+20                if(s.size()==3){
+21                    break;
+22                }
+23            }
+24        }
+25        ans+=garbage[0].size();
+26        return ans;
+27    }
+28};
