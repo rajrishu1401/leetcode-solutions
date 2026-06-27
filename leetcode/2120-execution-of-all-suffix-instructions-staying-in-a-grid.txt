@@ -1,0 +1,42 @@
+1class Solution {
+2public:
+3    vector<int> ans;
+4    vector<int> executeInstructions(int n, vector<int>& startPos, string s) {
+5        for(int i=0;i<s.size();i++){
+6            hlp(s,i,startPos,n);
+7        }
+8        return ans;
+9    }
+10    void hlp(string& s,int i,vector<int> startPos,int n){
+11        int u=0;
+12        for(;i<s.size();i++){
+13            if(s[i]=='R'){
+14                startPos[1]++;
+15                if(startPos[1]>=n){
+16                    ans.push_back(u);
+17                    return;
+18                }
+19            }else if(s[i]=='L'){
+20                startPos[1]--;
+21                if(startPos[1]<0){
+22                    ans.push_back(u);
+23                    return;
+24                }
+25            }else if(s[i]=='U'){
+26                startPos[0]--;
+27                if(startPos[0]<0){
+28                    ans.push_back(u);
+29                    return;
+30                }
+31            }else{
+32                startPos[0]++;
+33                if(startPos[0]>=n){
+34                    ans.push_back(u);
+35                    return;
+36                }
+37            }
+38            u++;
+39        }
+40        ans.push_back(u);
+41    }
+42};
