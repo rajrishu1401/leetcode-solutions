@@ -1,0 +1,26 @@
+1class Solution {
+2public:
+3    vector<vector<int>> findMatrix(vector<int>& nums) {
+4        unordered_map<int,int> m;
+5        for(int i:nums){
+6            m[i]++;
+7        }
+8        vector<vector<int>> ans;
+9        int u=0;
+10        while(m.size()){
+11            ans.push_back({});
+12            auto t=m.begin();
+13            while(t!=m.end()){
+14                ans[u].push_back(t->first);
+15                t->second--;
+16                if(t->second==0){
+17                    t=m.erase(t);
+18                }else{
+19                    t++;
+20                }
+21            }
+22            u++;
+23        }
+24        return ans;
+25    }
+26};
