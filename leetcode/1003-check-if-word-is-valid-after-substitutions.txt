@@ -1,0 +1,20 @@
+1class Solution {
+2public:
+3    bool isValid(string s) {
+4        stack<char> st;
+5        for(int i=0;i<s.size();i++){
+6            if(s[i]=='a'){
+7                st.push('c');
+8                st.push('b');
+9            }else if(st.empty()||st.top()!=s[i]){
+10                return false;
+11            }else{
+12                st.pop();
+13            }
+14        }
+15        if(st.empty()){
+16            return true;
+17        }
+18        return false;
+19    }
+20};
