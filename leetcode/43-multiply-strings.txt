@@ -1,0 +1,71 @@
+1class Solution {
+2public:
+3    string multiply(string num1, string num2) {
+4        string ans="";
+5        int p=0;
+6        if(num1=="0"||num2=="0"){
+7            return "0";
+8        }
+9        for(int i=num1.size()-1;i>=0;i--){
+10            string u="";
+11            int a=num1[i]-'0';
+12            int c=0;
+13            if(a==1){
+14                 u=num2;
+15            }else{
+16            for(int j=num2.size()-1;j>=0;j--){
+17                int b=num2[j]-'0';
+18                //cout<<a<<" * "<<b<<endl;
+19                b*=a;
+20                b+=c;
+21                //cout<<" mul "<<b<<endl;
+22                string y=to_string(b);
+23                if(y.size()==2){
+24                    u=y[1]+u;
+25                    c=y[0]-'0';
+26                }else{
+27                    u=y+u;
+28                    c=0;
+29                }
+30                //cout<<u<<endl;
+31            }
+32            if(c!=0)u=to_string(c)+u;
+33            }
+34            //cout<<" u :"<<u<<endl;
+35            c=0;
+36            int l=u.size()-1;
+37            for(int j=ans.size()-1-p;j>=0;j--){
+38                cout<<j<<" "<<l<<endl;
+39                int a=ans[j]-'0'+u[l]-'0';
+40                a+=c;
+41                string y=to_string(a);
+42                if(y.size()==2){
+43                    ans[j]=y[1];
+44                    c=y[0]-'0';
+45                }else{
+46                    ans[j]=y[0];
+47                    c=0;
+48                }
+49                l--;
+50            }
+51            //cout<<"mid: "<<ans<<endl;
+52            while(l>=0){
+53               int a=u[l]-'0';
+54                a+=c;
+55                string y=to_string(a);
+56                if(y.size()==2){
+57                    ans=y[1]+ans;
+58                    c=y[0]-'0';
+59                }else{
+60                    ans=y+ans;
+61                    c=0;
+62                } 
+63                l--;
+64            }
+65            if(c!=0) ans=to_string(c)+ans;
+66            //cout<<"ans:"<<ans<<endl;
+67            p++;
+68        }
+69        return ans;
+70    }
+71};
