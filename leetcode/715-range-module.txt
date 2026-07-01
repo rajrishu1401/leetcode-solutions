@@ -1,0 +1,203 @@
+1class RangeModule {
+2public:
+3    struct seg{
+4        int l;
+5        int r;
+6        bool all=false;
+7        seg* left=nullptr;
+8        seg* right=nullptr;
+9        seg(int lf,int rg){
+10            l=lf;
+11            r=rg;
+12        }
+13    };
+14    seg* top;
+15    RangeModule() {
+16        top=new seg(1,1e9);
+17    }
+18    
+19    void addRange(int left, int right) {
+20        seg* curr=top;
+21        addR(curr,left,right-1);
+22        // cout<<"start: -------- "<<endl;
+23        // prt(curr);
+24
+25    }
+26    void prt(seg* curr){
+27        if(curr==nullptr){
+28            return;
+29        }
+30        cout<<curr->l<<"  "<<curr->r<<" -> "<<curr->all<<endl;
+31        prt(curr->left);
+32        prt(curr->right);
+33    }
+34    void addR(seg* curr,int l,int r){
+35        if(curr->all){
+36            return;
+37        }
+38        if(l==curr->l&&r==curr->r){
+39            curr->left=nullptr;
+40            curr->right=nullptr;
+41            curr->all=true;
+42            return;
+43        } 
+44        int mid=(curr->l+curr->r)/2;
+45        if(r<=mid){
+46            if(curr->left==nullptr){
+47                curr->left=new seg(curr->l,mid);
+48            }
+49            addR(curr->left,l,r);
+50        }else if(l>mid){
+51            if(curr->right==nullptr){
+52                curr->right=new seg(mid+1,curr->r);
+53            }
+54            addR(curr->right,l,r);
+55        }else{
+56            if(curr->left==nullptr){
+57                curr->left=new seg(curr->l,mid);
+58            }
+59            if(curr->right==nullptr){
+60                curr->right=new seg(mid+1,curr->r);
+61            }
+62            addR(curr->left,l,mid);
+63            addR(curr->right,mid+1,r);
+64        }
+65        if(curr->left&&curr->left->all&&curr->right&&curr->right->all){
+66            curr->all=true;
+67            curr->left=nullptr;
+68            curr->right=nullptr;
+69        }
+70    }
+71    bool queryRange(int left, int right) {
+72        seg* curr=top;
+73        return queryR(curr,left,right-1);
+74    }
+75    bool queryR(seg* curr,int l, int r) {
+76        if(curr->all){
+77            return true;
+78        }
+79        if(l==curr->l&&r==curr->r){
+80            return curr->all;
+81        } 
+82        int mid=(curr->l+curr->r)/2;
+83        if(r<=mid){
+84            if(curr->left!=nullptr){
+85                if(queryR(curr->left,l,r)){
+86                    return true;
+87                }
+88            }
+89            return false;
+90        }
+91        if(l>mid){
+92            if(curr->right!=nullptr){
+93                if(queryR(curr->right,l,r)){
+94                    return true;
+95                }
+96            }
+97            return false;
+98        }
+99        bool b=false;
+100        if(curr->left!=nullptr){
+101            b=queryR(curr->left,l,mid);
+102        }
+103        bool q=false;
+104        if(curr->right!=nullptr){
+105            q=queryR(curr->right,mid+1,r);
+106        }
+107        
+108        if(b&&q){
+109            return true;
+110        }
+111        return false;
+112    }
+113    void removeRange(int left, int right) {
+114        seg* curr=top;
+115        
+116        removeR(curr,left,right-1);
+117        // cout<<"start: --------after remove "<<endl;
+118        // prt(curr);
+119    }
+120    bool removeR(seg* curr,int l, int r) {
+121        if(l==curr->l&&r==curr->r){
+122            curr->all=false;
+123            return true;
+124        }
+125        int mid=(curr->l+curr->r)/2;
+126        if(curr->all){
+127            curr->all=false;
+128            if(r<=mid){
+129                curr->right=new seg(mid+1,curr->r);
+130                curr->right->all=true;
+131                if(l!=curr->l||r!=mid){
+132                    curr->left=new seg(curr->l,mid);
+133                    if(l!=curr->l){
+134                        addR(curr->left,curr->l,l-1);
+135                    }
+136                    if(r!=mid){
+137                        addR(curr->left,r+1,mid);
+138                    }
+139                }
+140                
+141            }else if(l>mid){
+142                curr->left=new seg(curr->l,mid);
+143                curr->left->all=true;
+144                if(r!=curr->r||l!=(mid+1)){
+145                    curr->right=new seg(mid+1,curr->r);
+146                    if(r!=curr->r){
+147                        addR(curr->right,r+1,curr->r);
+148                    }
+149                    if(l!=(mid+1)){
+150                        addR(curr->right,mid+1,l-1);
+151                    }
+152                    
+153                }
+154            }else{
+155                if(l!=curr->l){
+156                    curr->left=new seg(curr->l,mid);
+157                    addR(curr->left,curr->l,l-1);
+158                }
+159                if(r!=curr->r){
+160                    curr->right=new seg(mid+1,curr->r);
+161                    addR(curr->right,r+1,curr->r);
+162                }
+163            }
+164        }else{
+165            if(r<=mid){
+166                if(curr->left){
+167                    if(removeR(curr->left,l,r)){
+168                        curr->left=nullptr;
+169                    }
+170                }
+171            }else if(l>mid){
+172                if(curr->right){
+173                    if(removeR(curr->right,l,r)){
+174                        curr->right=nullptr;
+175                    }
+176                }
+177            }else{
+178                if(curr->left){
+179                    if(removeR(curr->left,l,mid)){
+180                        curr->left=nullptr;
+181                    }
+182                }
+183                if(curr->right){
+184                    if(removeR(curr->right,mid+1,r)){
+185                        curr->right=nullptr;
+186                    }
+187                }
+188            }
+189            if(curr->left==nullptr&&curr->right==nullptr){
+190                return true;
+191            }
+192        }
+193        return false;
+194    }
+195};
+196
+197/**
+198 * Your RangeModule object will be instantiated and called as such:
+199 * RangeModule* obj = new RangeModule();
+200 * obj->addRange(left,right);
+201 * bool param_2 = obj->queryRange(left,right);
+202 * obj->removeRange(left,right);
+203 */
