@@ -1,0 +1,19 @@
+1class Solution {
+2public:
+3    long long sumAndMultiply(int n) {
+4        int x=0;
+5        int s=0;
+6        int i=1;
+7        while(n){
+8            int c=n%10;
+9            if(c){
+10                s+=c;
+11                c*=i;
+12                x=c+x;
+13                i*=10;
+14            }
+15            n/=10;
+16        }
+17        return (long long)x*s;
+18    }
+19};
