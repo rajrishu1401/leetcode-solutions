@@ -1,0 +1,54 @@
+1class Solution {
+2public:
+3    vector<int> sequentialDigits(int low, int high) {
+4        int c=0;
+5        int l=low;
+6        while(low>9){
+7            low/=10;
+8            c++;
+9        }
+10        int d=pow(10,c);
+11        int rn=low;
+12        int u=low*(d);
+13        vector<int> ans;
+14        if((low+c)<=9){
+15            while(d&&u>=(l/d)){
+16                d/=10;
+17                rn++;
+18                u+=(rn*d);
+19            }
+20            if(u>=l&&u<=high){
+21                ans.push_back(u);
+22            }
+23        }else{
+24            c++;
+25            low=0;
+26        }
+27        //cout<<ans.size()<<endl;
+28        c++;
+29        while(high/(pow(10,c))){
+30            int k=low+1;
+31            if((k+c-1)>9){
+32                c++;
+33                low=0;
+34                continue;
+35            }
+36            int v=0;
+37            int r=c;
+38            while(r){
+39                v*=10;
+40                v+=k;
+41                k++;
+42                r--;
+43            }
+44            if(v>high){
+45                return ans;
+46            }
+47            ans.push_back(v);
+48            low++;
+49        }
+50        return ans;
+51    }
+52
+53    
+54};
