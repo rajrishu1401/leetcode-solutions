@@ -1,0 +1,12 @@
+1class Solution {
+2public:
+3    int gcdOfOddEvenSums(int n) {
+4        int p=n*2;
+5        double u=p*(p+1);
+6        u/=2;
+7        u/=2.0;
+8        int y=u-(n/2.0);
+9        int v=u+(n/2.0);
+10        return gcd(v,y);
+11    }
+12};
