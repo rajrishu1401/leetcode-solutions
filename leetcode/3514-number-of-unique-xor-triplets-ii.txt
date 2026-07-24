@@ -1,0 +1,2 @@
+S = {1, 3}  # After three rounds of XOR operations
+result = len(S)  # Answer = 2
