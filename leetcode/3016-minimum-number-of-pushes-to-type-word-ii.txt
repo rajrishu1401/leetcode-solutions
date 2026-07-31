@@ -1,0 +1,30 @@
+1class Solution {
+2public:
+3    int minimumPushes(string word) {
+4        vector<int> v(26);
+5        for(char i:word){
+6            v[i-'a']++;
+7        }
+8        sort(v.begin(),v.end(),greater<int>());
+9        int l=26;
+10        int u=1;
+11        int ans=0;
+12        int i=0;
+13        while(i<8){
+14            ans+=v[i];
+15            i++;
+16        }
+17        while(i<16){
+18            ans+=(v[i]*2);
+19            i++;
+20        }
+21        while(i<24){
+22            ans+=(v[i]*3);
+23            i++;
+24        }
+25        ans+=(v[i]*4);
+26        i++;
+27        ans+=(v[i]*4);
+28        return ans;
+29    }
+30};
