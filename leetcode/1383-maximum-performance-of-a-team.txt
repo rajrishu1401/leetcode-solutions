@@ -1,0 +1,41 @@
+1class Solution {
+2public:
+3    int maxPerformance(int n, vector<int>& speed, vector<int>& efficiency, int k) {
+4        vector<vector<int>> v;
+5        for(int i=0;i<speed.size();i++){
+6            v.push_back({speed[i],efficiency[i]});
+7        }
+8        int mod=1e9+7;
+9        sort(v.begin(),v.end(),greater<vector<int>>());
+10        priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>> q;
+11        int i=0;
+12        long long su=0;
+13        long long ans=0;
+14        while(i<k){
+15            q.push({v[i][1],v[i][0]});
+16            ans=max(ans,((long long)v[i][1]*v[i][0]));
+17            su+=v[i][0];
+18            ans=max(ans,(long long)(su*q.top()[0]));
+19            i++;
+20        }
+21        while(i<v.size()){
+22            if(q.top()[0]<v[i][1]){
+23                su-=q.top()[1];
+24                q.pop();
+25                q.push({v[i][1],v[i][0]});
+26                ans=max(ans,((long long)v[i][1]*v[i][0]));
+27                su+=v[i][0];
+28                long long h=su*q.top()[0];
+29                ans=max(h,ans);
+30            }
+31            i++;
+32        }
+33        while(!q.empty()){
+34            long long h=su*q.top()[0];
+35            ans=max(h,ans);
+36            su-=q.top()[1];
+37            q.pop();
+38        }
+39        return ans%mod;
+40    }
+41};
