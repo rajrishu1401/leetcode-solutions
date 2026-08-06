@@ -1,0 +1,25 @@
+1class Solution {
+2public:
+3    int product(int n){
+4        int temp = n;
+5        int pro = 1;
+6        while(temp > 0){
+7            int digit = temp%10;
+8            pro *= digit;
+9            temp = temp/10; 
+10        }
+11        return pro;
+12    }
+13    int smallestNumber(int n, int t) {
+14        int i = n;
+15
+16        while(i){
+17            int temp = product(i);
+18            if(temp % t == 0){
+19                return i;
+20            }
+21            i++;
+22        }
+23        return 0;
+24    }
+25};
