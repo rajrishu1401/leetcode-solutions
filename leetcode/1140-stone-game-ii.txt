@@ -1,0 +1,31 @@
+1class Solution {
+2public:
+3    int stoneGameII(vector<int>& piles) {
+4        vector<vector<int>> dp(piles.size(),vector<int>(piles.size()*2,-1));
+5        int t=0;
+6        for(int i:piles)t+=i;
+7        return hlp(piles,0,1,dp,t);
+8    }
+9    int hlp(vector<int>& piles,int i,int m,vector<vector<int>>& dp, int t){
+10        if(i>=piles.size()){
+11            return 0;
+12        }
+13        if(dp[i][m]!=-1){
+14            return dp[i][m];
+15        }
+16        int a=0;
+17        int y=2*m;
+18        y+=i;
+19        y=min(y,(int)piles.size());
+20        int c=0;
+21        for(int j=i;j<y;j++){
+22            int u=max(j-i+1,m);
+23            c+=piles[j];
+24            int o=hlp(piles,j+1,u,dp,t-c);
+25            o=(t-o);
+26            a=max(a,o);
+27        }
+28        dp[i][m]=a;
+29        return a;
+30    }
+31};
