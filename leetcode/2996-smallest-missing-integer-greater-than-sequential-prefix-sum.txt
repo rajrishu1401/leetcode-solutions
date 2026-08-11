@@ -1,0 +1,24 @@
+1class Solution {
+2public:
+3    int missingInteger(vector<int>& nums) {
+4        unordered_set<int> s;
+5        for(int i:nums){
+6            s.insert(i);
+7        }
+8        int a=nums[0];
+9        for(int i=1;i<nums.size();i++){
+10            if(nums[i]!=(nums[i-1]+1)){
+11                break;
+12            }else{
+13                a+=nums[i];
+14            }
+15        }
+16        while(true){
+17            if(!s.count(a)){
+18                return a;
+19            }
+20            a++;
+21        }
+22        return -1;
+23    }
+24};
