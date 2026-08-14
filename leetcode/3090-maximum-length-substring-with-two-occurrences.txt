@@ -1,0 +1,22 @@
+1class Solution {
+2public:
+3    int maximumLengthSubstring(string s) {
+4        vector<int> a(26);
+5        int i=0;
+6        int j=0;
+7        int c=0;
+8        while(i<s.size()){
+9            a[s[i]-'a']++;
+10            if(a[s[i]-'a']>2){
+11                c=max(c,i-j);
+12                while(a[s[i]-'a']>2){
+13                    a[s[j]-'a']--;
+14                    j++;
+15                }
+16            }
+17            i++;
+18        }
+19        c=max(c,i-j);
+20        return c;
+21    }
+22};
