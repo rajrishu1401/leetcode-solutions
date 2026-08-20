@@ -1,0 +1,27 @@
+1class Solution {
+2public:
+3    vector<int> resultArray(vector<int>& nums) {
+4        vector<int> a;
+5        vector<int> b;
+6
+7        a.push_back(nums[0]);
+8        b.push_back(nums[1]);
+9
+10        int i = 2;
+11
+12        while(i < nums.size()) {
+13            if(a.back() > b.back()) {
+14                a.push_back(nums[i]);
+15            } else {
+16                b.push_back(nums[i]);
+17            }
+18            i++;
+19        }
+20
+21        for(int x : b) {
+22            a.push_back(x);
+23        }
+24
+25        return a;
+26    }
+27};
