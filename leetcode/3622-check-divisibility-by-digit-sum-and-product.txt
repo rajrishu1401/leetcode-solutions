@@ -1,0 +1,21 @@
+1class Solution {
+2public:
+3    bool checkDivisibility(int n) {
+4        int s=0;
+5        int p=1;
+6        int m=n;
+7        while(n){
+8            int d=n%10;
+9            s+=d;
+10            p*=d;
+11            n/=10;
+12        }
+13        //cout<<p<<" "<<s<<endl;
+14        s+=p;
+15        //cout<<s;
+16        if(m%s==0){
+17            return true;
+18        }
+19        return false;
+20    }
+21};
