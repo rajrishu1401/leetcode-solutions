@@ -1,0 +1,17 @@
+1class Solution {
+2public:
+3    int missingMultiple(vector<int>& nums, int k) {
+4        unordered_set<int> s;
+5        for(int i:nums){
+6            s.insert(i);
+7        }
+8        int i=1;
+9        while(true){
+10            if(!s.count(k*i)){
+11                return k*i;
+12            }
+13            i++;
+14        }
+15        return 0;
+16    }
+17};
