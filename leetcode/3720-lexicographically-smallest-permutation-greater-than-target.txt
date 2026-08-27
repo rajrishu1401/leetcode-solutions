@@ -1,0 +1,73 @@
+1class Solution {
+2public:
+3    string lexGreaterPermutation(string s, string target) {
+4        map<char,int> m;
+5        for(char i:s){
+6            m[i]++;
+7        }
+8        int i=0;
+9        string h="";
+10        for(;i<target.size();i++){
+11            if(m.count(target[i])){
+12                m[target[i]]--;
+13                h+=target[i];
+14                if(m[target[i]]==0){
+15                    m.erase(target[i]);
+16                }
+17            }else{
+18                auto t=m.upper_bound(target[i]);
+19                if(t==m.end()){
+20                    return hlp(m,target,i,h);
+21                }
+22                h+=t->first;
+23                t->second--;
+24                if(t->second==0){
+25                    m.erase(t);
+26                }
+27                break;
+28            }
+29            //cout<<h<<endl;
+30        }
+31        for(auto& t:m){
+32            while(t.second){
+33                h+=t.first;
+34                t.second--;
+35            }
+36            //cout<<h<<endl;
+37        }
+38        if(h==target){
+39            return hlp(m,target,h.size(),h);
+40        }
+41        return h;
+42    }
+43
+44    string hlp(map<char,int>& m,string tar,int j,string h){
+45        int i=j-1;
+46        string u="";
+47        while(i>=0){
+48            auto t=m.upper_bound(tar[i]);
+49            m[tar[i]]++;
+50            if(t!=m.end()){
+51                h[i]=t->first;
+52                m[t->first]--;
+53                if(m[t->first]==0){
+54                    m.erase(t->first);
+55                }
+56                u=h.substr(0,i+1);
+57                break;
+58            }
+59            i--;
+60        }
+61        if(i==-1){
+62            return "";
+63        }
+64        for(auto& t:m){
+65            while(t.second){
+66                u+=t.first;
+67                t.second--;
+68            }
+69            //cout<<h<<endl;
+70        }
+71        return u;
+72    }
+73};
