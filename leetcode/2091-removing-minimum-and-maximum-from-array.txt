@@ -1,0 +1,23 @@
+1class Solution {
+2public:
+3    int minimumDeletions(vector<int>& nums) {
+4        if(nums.size()<=2){
+5            return nums.size();
+6        }
+7        pair<int,int> ma={INT_MIN,-1};
+8        pair<int,int> mi={INT_MAX,-1};
+9        for(int i=0;i<nums.size();i++){
+10            if(ma.first<nums[i]){
+11                ma={nums[i],i};
+12            }
+13            if(mi.first>nums[i]){
+14                mi={nums[i],i};
+15            }
+16        }
+17        int m=max(mi.second,ma.second)+1;
+18        int n=min(mi.second,ma.second)+1;
+19        int u=nums.size()-n+1;
+20        int o=n+(nums.size()-m+1);
+21        return min({m,u,o});
+22    }
+23};
