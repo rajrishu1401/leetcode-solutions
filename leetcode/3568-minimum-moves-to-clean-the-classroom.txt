@@ -1,0 +1,157 @@
+1class Solution {
+2public:
+3    int minMoves(vector<string>& classroom, int energy) {
+4        priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>> q;
+5        int l=0;
+6        vector<int> v(5);
+7        vector<vector<int>> m(classroom.size(),vector<int>(classroom[0].size()));
+8        int w=0;
+9        for(int i=0;i<classroom.size();i++){
+10            for(int j=0;j<classroom[0].size();j++){
+11                if(classroom[i][j]=='L'){
+12                    m[i][j]=l;
+13                    w=(w|(1<<l));
+14                    l++;
+15                }else if(classroom[i][j]=='S'){
+16                    v={0,0,energy,i,j};
+17                }
+18            }
+19        }
+20        if(l==0) return 0;
+21        vector<vector<vector<int>>> st(classroom.size(),vector<vector<int>>(classroom[0].size(),vector<int>(1<<l,-1)));
+22        v[1]=w;
+23        q.push(v);
+24        while(!q.empty()){
+25            vector<int> u=q.top();
+26            q.pop();
+27            if(st[u[3]][u[4]][u[1]]>u[2]){
+28                continue;
+29            }
+30            if(u[2]<=0){
+31                continue;
+32            }
+33            if(u[3]>0){
+34                v[3]=u[3]-1;
+35                v[0]=u[0]+1;
+36                v[2]=u[2]-1;
+37                v[4]=u[4];
+38                v[1]=u[1];
+39                if(classroom[v[3]][v[4]]=='L'){
+40                    if((v[1]&(1<<m[v[3]][v[4]]))!=0){
+41                        v[1]=v[1]^(1<<m[v[3]][v[4]]);
+42                        if(v[1]==0){
+43                            return v[0];
+44                        }
+45                    }
+46                    // FIX: index st by v[1] (mask), not h
+47                    if(st[v[3]][v[4]][v[1]]<v[2]){
+48                        st[v[3]][v[4]][v[1]]=v[2];
+49                        q.push(v);
+50                    }
+51                }else if(classroom[v[3]][v[4]]=='R'){
+52                    v[2]=energy;
+53                    if(st[v[3]][v[4]][v[1]]<v[2]){
+54                        st[v[3]][v[4]][v[1]]=v[2];
+55                        q.push(v);
+56                    }
+57                }else if(classroom[v[3]][v[4]]!='X'){
+58                    if(st[v[3]][v[4]][v[1]]<v[2]){
+59                        st[v[3]][v[4]][v[1]]=v[2];
+60                        q.push(v);
+61                    }
+62                }
+63            }
+64            if((u[3]+1)<classroom.size()){
+65                v[3]=u[3]+1;
+66                v[0]=u[0]+1;
+67                v[2]=u[2]-1;
+68                v[4]=u[4];
+69                v[1]=u[1];
+70                if(classroom[v[3]][v[4]]=='L'){
+71                    if((v[1]&(1<<m[v[3]][v[4]]))!=0){
+72                        v[1]=v[1]^(1<<m[v[3]][v[4]]);
+73                        if(v[1]==0){
+74                            return v[0];
+75                        }
+76                    }
+77                    if(st[v[3]][v[4]][v[1]]<v[2]){
+78                        st[v[3]][v[4]][v[1]]=v[2];
+79                        q.push(v);
+80                    }
+81                }else if(classroom[v[3]][v[4]]=='R'){
+82                    v[2]=energy;
+83                    if(st[v[3]][v[4]][v[1]]<v[2]){
+84                        st[v[3]][v[4]][v[1]]=v[2];
+85                        q.push(v);
+86                    }
+87                }else if(classroom[v[3]][v[4]]!='X'){
+88                    if(st[v[3]][v[4]][v[1]]<v[2]){
+89                        st[v[3]][v[4]][v[1]]=v[2];
+90                        q.push(v);
+91                    }
+92                }
+93            }
+94            if(u[4]>0){
+95                v[4]=u[4]-1;
+96                v[0]=u[0]+1;
+97                v[2]=u[2]-1;
+98                v[3]=u[3];
+99                v[1]=u[1];
+100                if(classroom[v[3]][v[4]]=='L'){
+101                    if((v[1]&(1<<m[v[3]][v[4]]))!=0){
+102                        v[1]=v[1]^(1<<m[v[3]][v[4]]);
+103                        if(v[1]==0){
+104                            return v[0];
+105                        }
+106                    }
+107                    if(st[v[3]][v[4]][v[1]]<v[2]){
+108                        st[v[3]][v[4]][v[1]]=v[2];
+109                        q.push(v);
+110                    }
+111                }else if(classroom[v[3]][v[4]]=='R'){
+112                    v[2]=energy;
+113                    if(st[v[3]][v[4]][v[1]]<v[2]){
+114                        st[v[3]][v[4]][v[1]]=v[2];
+115                        q.push(v);
+116                    }
+117                }else if(classroom[v[3]][v[4]]!='X'){
+118                    if(st[v[3]][v[4]][v[1]]<v[2]){
+119                        st[v[3]][v[4]][v[1]]=v[2];
+120                        q.push(v);
+121                    }
+122                }
+123            }
+124            if((u[4]+1)<classroom[0].size()){
+125                v[4]=u[4]+1;
+126                v[0]=u[0]+1;
+127                v[2]=u[2]-1;
+128                v[3]=u[3];
+129                v[1]=u[1];
+130                if(classroom[v[3]][v[4]]=='L'){
+131                    if((v[1]&(1<<m[v[3]][v[4]]))!=0){
+132                        v[1]=v[1]^(1<<m[v[3]][v[4]]);
+133                        if(v[1]==0){
+134                            return v[0];
+135                        }
+136                    }
+137                    if(st[v[3]][v[4]][v[1]]<v[2]){
+138                        st[v[3]][v[4]][v[1]]=v[2];
+139                        q.push(v);
+140                    }
+141                }else if(classroom[v[3]][v[4]]=='R'){
+142                    v[2]=energy;
+143                    if(st[v[3]][v[4]][v[1]]<v[2]){
+144                        st[v[3]][v[4]][v[1]]=v[2];
+145                        q.push(v);
+146                    }
+147                }else if(classroom[v[3]][v[4]]!='X'){
+148                    if(st[v[3]][v[4]][v[1]]<v[2]){
+149                        st[v[3]][v[4]][v[1]]=v[2];
+150                        q.push(v);
+151                    }
+152                }
+153            }
+154        }
+155        return -1;
+156    }
+157};
