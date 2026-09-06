@@ -1,0 +1,24 @@
+1class Solution {
+2public:
+3    int numDistinct(string s, string t) {
+4        vector<vector<int>> dp(s.size(),vector<int>(t.size(),-1));
+5        return sol(s,t,dp,0,0);
+6    }
+7    int sol(string& s,string& t,vector<vector<int>>& dp,int i,int j){
+8        if(j>=t.size()){
+9            return 1;
+10        }
+11        if(i>=s.size()){
+12            return 0;
+13        }
+14        if(dp[i][j]!=-1){
+15            return dp[i][j];
+16        }
+17        int u=sol(s,t,dp,i+1,j);
+18        if(s[i]==t[j]){
+19            u+=sol(s,t,dp,i+1,j+1);
+20        }
+21        dp[i][j]=u;
+22        return u;
+23    }
+24};
