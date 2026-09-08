@@ -1,0 +1,9 @@
+1class Solution {
+2public:
+3    int countCommas(int n) {
+4        if(999<n){
+5            return n-999;
+6        }
+7        return 0;
+8    }
+9};
