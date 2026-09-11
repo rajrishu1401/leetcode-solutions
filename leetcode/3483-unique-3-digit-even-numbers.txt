@@ -1,0 +1,54 @@
+1class Solution {
+2public:
+3    unordered_set<string> st;
+4    int ans=0;
+5    int totalNumbers(vector<int>& digits) {
+6        hlp(digits,"aaa",0,0);
+7        return ans;
+8    }
+9    void hlp(vector<int>& digits,string s,int i,int y){
+10        if(i>=digits.size()){
+11            return;
+12        }
+13        hlp(digits,s,i+1,y);
+14        if(digits[i]!=0&&s[0]=='a'){
+15            s[0]=digits[i]+'0';
+16            if(y==2){
+17                if(!st.count(s)){
+18                    ans++;
+19                    st.insert(s);
+20                }
+21            }else{
+22                hlp(digits,s,i+1,y+1);
+23            }
+24            s[0]='a';
+25        }
+26        if(s[1]=='a'){
+27            s[1]=digits[i]+'0';
+28            if(y==2){
+29                if(!st.count(s)){
+30                    ans++;
+31                    st.insert(s);
+32                }
+33            }else{
+34                hlp(digits,s,i+1,y+1);
+35            }
+36            s[1]='a';
+37        }
+38        if(digits[i]%2==0){
+39            if(s[2]=='a'){
+40                s[2]=digits[i]+'0';
+41                if(y==2){
+42                    if(!st.count(s)){
+43                        ans++;
+44                        st.insert(s);
+45                    }
+46                }else{
+47                    hlp(digits,s,i+1,y+1);
+48                }
+49                s[2]='a';
+50            }
+51        }
+52    }
+53
+54};
