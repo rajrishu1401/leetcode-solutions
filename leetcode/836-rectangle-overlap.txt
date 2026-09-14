@@ -1,0 +1,35 @@
+1class Solution {
+2public:
+3    bool isRectangleOverlap(vector<int>& rec1, vector<int>& rec2) {
+4        if(rec2[1]>rec1[1]){
+5            if(rec2[1]<rec1[3]){
+6                if(rec1[0]<rec2[0]){
+7                    if(rec2[0]<rec1[2]){
+8                        return true;
+9                    }
+10                    return false;
+11                }else{
+12                    if(rec1[0]<rec2[2]){
+13                        return true;
+14                    }
+15                    return false;
+16                }
+17            }
+18            return false;
+19        }
+20        if(rec1[1]<rec2[3]){
+21            if(rec1[0]<rec2[0]){
+22                if(rec2[0]<rec1[2]){
+23                    return true;
+24                }
+25                return false;
+26            }else{
+27                if(rec1[0]<rec2[2]){
+28                    return true;
+29                }
+30                return false;
+31            }
+32        }
+33        return false;
+34    }
+35};
