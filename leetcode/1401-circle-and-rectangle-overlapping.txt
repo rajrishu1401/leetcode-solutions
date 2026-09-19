@@ -1,0 +1,50 @@
+1class Solution {
+2public:
+3    bool checkOverlap(int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2) {
+4        if((x1>(xCenter+radius))||(x2<(xCenter-radius))||(y2<(yCenter-radius))||(y1>(yCenter+radius))){
+5            return false;
+6        }
+7        if(y1<=yCenter&&x1<=xCenter&&x2>=xCenter&&y2>=yCenter){
+8            return true;
+9        }
+10        if((xCenter+radius)>=x1&&yCenter<=y2&&yCenter>=y1){
+11            return true;
+12        }
+13        if((xCenter-radius)<=x2&&yCenter<=y2&&yCenter>=y1){
+14            return true;
+15        }
+16        if((yCenter+radius)>=y1&&xCenter<=x2&&xCenter>=x1){
+17            return true;
+18        }
+19        if((yCenter-radius)<=y2&&xCenter<=x2&&xCenter>=x1){
+20            return true;
+21        }
+22        if(chck(x1,y1,xCenter,yCenter,radius)){
+23            return true;
+24        }
+25        if(chck(x2,y2,xCenter,yCenter,radius)){
+26            return true;
+27        }
+28        if(chck(x1,y2,xCenter,yCenter,radius)){
+29            return true;
+30        }
+31        if(chck(x2,y1,xCenter,yCenter,radius)){
+32            return true;
+33        }
+34        
+35        
+36        return false;
+37    }
+38    bool chck(int x,int y,int rx,int ry,double r){
+39        double u=x-rx;
+40        double v=y-ry;
+41        u*=u;
+42        v*=v;
+43        u+=v;
+44        u=pow(u,0.5);
+45        if(r>=u){
+46            return true;
+47        }
+48        return false;
+49    }
+50};
