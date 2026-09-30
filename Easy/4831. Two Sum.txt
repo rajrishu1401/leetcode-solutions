@@ -2,7 +2,7 @@
 Problem: Two Sum
 Difficulty: Easy
 Language: unknown
-Submitted: 9/30/2026, 5:48:54 PM
+Submitted: 9/30/2026, 5:50:55 PM
 URL: https://leetcode.com/problems/two-sum/description/
 */
 
