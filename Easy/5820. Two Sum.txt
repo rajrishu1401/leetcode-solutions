@@ -1,0 +1,14 @@
+/*
+Problem: Two Sum
+Difficulty: Easy
+Language: unknown
+Submitted: 9/30/2026, 5:50:56 PM
+URL: https://leetcode.com/problems/two-sum/description/
+*/
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        
+    }
+};
